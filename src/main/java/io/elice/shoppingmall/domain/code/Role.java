@@ -1,4 +1,4 @@
-package io.elice.shoppingmall.code;
+package io.elice.shoppingmall.domain.code;
 
 import lombok.Getter;
 

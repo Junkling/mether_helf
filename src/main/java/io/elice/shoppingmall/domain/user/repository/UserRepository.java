@@ -1,6 +1,6 @@
-package io.elice.shoppingmall.user.repository;
+package io.elice.shoppingmall.domain.user.repository;
 
-import io.elice.shoppingmall.user.entity.User;
+import io.elice.shoppingmall.domain.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

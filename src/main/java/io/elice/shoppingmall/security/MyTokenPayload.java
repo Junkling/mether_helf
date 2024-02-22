@@ -1,6 +1,5 @@
 package io.elice.shoppingmall.security;
 
-import io.elice.shoppingmall.code.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

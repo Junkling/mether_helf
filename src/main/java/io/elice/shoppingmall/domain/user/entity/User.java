@@ -1,7 +1,7 @@
-package io.elice.shoppingmall.user.entity;
+package io.elice.shoppingmall.domain.user.entity;
 
 
-import io.elice.shoppingmall.code.Role;
+import io.elice.shoppingmall.domain.code.Role;
 import io.elice.shoppingmall.common.BassEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
