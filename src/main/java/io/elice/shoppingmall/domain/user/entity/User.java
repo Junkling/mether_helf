@@ -3,19 +3,17 @@ package io.elice.shoppingmall.domain.user.entity;
 
 import io.elice.shoppingmall.domain.code.Role;
 import io.elice.shoppingmall.common.BassEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
 public class User extends BassEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +25,10 @@ public class User extends BassEntity {
 
     private String nickname;
 
-    private Role role;
+    private String email;
+
+    @ElementCollection
+    private List<String> roles = new ArrayList<>();
 
     private String job;
 
