@@ -1,10 +1,16 @@
 package io.elice.shoppingmall.security;
 
+import jakarta.annotation.PostConstruct;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,6 +26,15 @@ public class JwtFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
 
+    private final JwtProvider jwtProvider;
+
+    private AuthenticationManager authenticationManager;
+
+    @PostConstruct
+    public void init() {
+        this.authenticationManager = new ProviderManager(jwtProvider);
+    }
+
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String path = request.getRequestURI();
@@ -27,26 +42,30 @@ public class JwtFilter extends OncePerRequestFilter {
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException,IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
             //access 유효성
-            String jwt = jwtUtil.extractJwtFromRequest(request);
+            String token = jwtUtil.extractJwtFromRequest(request);
 
-            if (jwt != null && jwtUtil.validateToken(jwt)) {
+            if (token != null && jwtUtil.validateToken(token)) {
+                MyTokenAuthentication authenticateRequest = new MyTokenAuthentication(token);
+                Authentication authenticationResult = authenticationManager.authenticate(authenticateRequest);
 
-                String userId = jwtUtil.extractUsername(jwt);
-
-                if(!jwtUtil.isAccess(jwt)) {
-                    response.setStatus(418);
-                } else{
-                    Authentication authentication = new UsernamePasswordAuthenticationToken(
-                        Integer.parseInt(userId), null, null); // You might need to implement your own UserDetails here.
-
-                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                if (!authenticateRequest.isAuthenticated()) {
+                    throw new BadCredentialsException("인증이 실패하였습니다.");
                 }
+                SecurityContextHolder.getContext().setAuthentication(authenticationResult);
             }
+
         } catch (Exception e) {
-            response.setStatus(401);
+            SecurityContextHolder.clearContext();
+
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().print(e.getMessage());
+            response.getWriter().flush();
+            return;
         }
 
         filterChain.doFilter(request, response);

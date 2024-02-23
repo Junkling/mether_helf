@@ -37,9 +37,9 @@ public class UserController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = Boolean.class))),
             @ApiResponse(responseCode = "500", description = "에러", content = @Content(schema = @Schema(implementation = Boolean.class)))})
-    public ResponseEntity<Boolean> duplicateCheck(@RequestParam(name = "id") String id
-            ,@RequestParam(name = "nickname") String nickname
-            ,@RequestParam(name = "nickname") String email) {
+    public ResponseEntity<Boolean> duplicateCheck(@RequestParam(name = "id",required = false) String id
+            ,@RequestParam(name = "nickname",required = false) String nickname
+            ,@RequestParam(name = "email",required = false) String email) {
 
         userService.duplicateIdCheck(id);
         userService.duplicateNicknameCheck(nickname);

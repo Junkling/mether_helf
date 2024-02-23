@@ -45,4 +45,5 @@ public class MyTokenAuthentication implements Authentication {
     public String getName() {
         return payload.getUsername();
     }
+
 }
