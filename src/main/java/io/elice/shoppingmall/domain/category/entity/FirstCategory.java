@@ -5,6 +5,9 @@ import io.elice.shoppingmall.domain.code.Role;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Builder
 @AllArgsConstructor
 @Getter
@@ -19,5 +22,9 @@ public class FirstCategory extends BassEntity {
     private Role role;
 
     private String name;
+
+    @OneToMany(mappedBy = "firstCategory")
+    private List<MiddleCategory> middleCategories = new ArrayList<>();
+
 
 }
