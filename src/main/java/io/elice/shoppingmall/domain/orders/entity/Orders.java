@@ -1,4 +1,4 @@
-package io.elice.shoppingmall.domain;
+package io.elice.shoppingmall.domain.orders.entity;
 
 import io.elice.shoppingmall.common.BassEntity;
 import jakarta.persistence.*;
