@@ -1,6 +1,7 @@
 package io.elice.shoppingmall.domain.orderitem.entity;
 
 import io.elice.shoppingmall.common.BassEntity;
+import io.elice.shoppingmall.domain.orders.entity.Orders;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -17,7 +18,10 @@ public class OrderItem extends BassEntity {
     private Long id;
 
     private Long item_id;
-    private Long orders_id;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "orders_id")
+    private Orders orders;
 
     private Long count;
     private Long amount;
