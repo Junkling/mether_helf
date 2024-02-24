@@ -6,15 +6,17 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.stereotype.Component;
 
 @Slf4j
 @RequiredArgsConstructor
+@Component
 public class JwtProvider implements AuthenticationProvider {
     private final JwtUtil tokenService;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        log.debug("y토큰 인증을 수행합니다.");
+        log.debug("토큰 인증을 수행합니다.");
         if (supports(authentication.getClass())) {
             MyTokenPayload verified = tokenService.verify(((MyTokenAuthentication) authentication).getToken());
             authentication.setAuthenticated(true);
