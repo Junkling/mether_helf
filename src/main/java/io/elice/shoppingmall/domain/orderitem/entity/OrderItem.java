@@ -1,6 +1,7 @@
 package io.elice.shoppingmall.domain.orderitem.entity;
 
 import io.elice.shoppingmall.common.BassEntity;
+import io.elice.shoppingmall.domain.item.entity.Item;
 import io.elice.shoppingmall.domain.orders.entity.Orders;
 import jakarta.persistence.*;
 import lombok.*;
@@ -17,11 +18,15 @@ public class OrderItem extends BassEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long item_id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Item item;
+
+    private String itemName;
+    private String itemPrice;
+    private Integer count;
+    private Integer amount;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Orders orders;
 
-    private Integer count;
-    private Long amount;
 }
