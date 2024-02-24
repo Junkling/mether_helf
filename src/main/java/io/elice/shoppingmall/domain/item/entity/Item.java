@@ -20,7 +20,7 @@ public class Item extends BassEntity {
 
     private String name;
 
-    private String price;
+    private Integer price;
 
     private Integer stock;
 

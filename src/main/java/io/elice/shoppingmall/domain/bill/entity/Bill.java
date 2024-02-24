@@ -17,12 +17,13 @@ public class Bill extends BassEntity {
     private Long id;
 
     private String bankName;
-    private Long account;
+    private Integer account;
     private String depositorName;
 
-    private Long amount;
+    private Integer amount;
 
-    private Long ordersId;
+    @OneToOne
+    private Orders orders;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private StatusCode statusCode;

@@ -30,10 +30,10 @@ public class Orders extends BassEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
-    @OneToOne
+    @OneToOne(mappedBy = "orders")
     private Delivery delivery;
 
-    @OneToOne
+    @OneToOne(mappedBy = "orders")
     private Bill bill;
 
     private String payment;
