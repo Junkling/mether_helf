@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 public class Orders extends BassEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "orders_id")
     private Long id;
 
     private String title;
