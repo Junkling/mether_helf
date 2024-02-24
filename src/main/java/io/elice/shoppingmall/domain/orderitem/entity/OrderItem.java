@@ -19,13 +19,9 @@ public class OrderItem extends BassEntity {
 
     private Long item_id;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "orders_id")
+    @ManyToOne(fetch = FetchType.LAZY)
     private Orders orders;
 
-    private Long count;
+    private Integer count;
     private Long amount;
-
-    private LocalDateTime created_at;
-    private LocalDateTime modified_at;
 }

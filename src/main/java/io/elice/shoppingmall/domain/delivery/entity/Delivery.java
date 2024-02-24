@@ -1,6 +1,7 @@
 package io.elice.shoppingmall.domain.delivery.entity;
 
 import io.elice.shoppingmall.common.BassEntity;
+import io.elice.shoppingmall.domain.statuscode.entity.StatusCode;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -15,11 +16,11 @@ public class Delivery extends BassEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long orders_id;
+    private Long ordersId;
     private String address;
-    private String delivery_status;
 
-    private LocalDateTime created_at;
-    private LocalDateTime modified_at;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private StatusCode statusCode;
+
 
 }

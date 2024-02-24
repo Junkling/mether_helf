@@ -1,10 +1,11 @@
 package io.elice.shoppingmall.domain.bill.entity;
 
 import io.elice.shoppingmall.common.BassEntity;
+import io.elice.shoppingmall.domain.orders.entity.Orders;
+import io.elice.shoppingmall.domain.statuscode.entity.StatusCode;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @Getter
@@ -15,15 +16,16 @@ public class Bill extends BassEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String bank_name;
+    private String bankName;
     private Long account;
-    private String depositor_name;
+    private String depositorName;
 
     private Long amount;
-    private Long orders_id;
 
-    private String bill_status;
+    private Long ordersId;
 
-    private LocalDateTime created_at;
-    private LocalDateTime modified_at;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private StatusCode statusCode;
+
+
 }

@@ -1,6 +1,10 @@
 package io.elice.shoppingmall.domain.orders.entity;
 
 import io.elice.shoppingmall.common.BassEntity;
+import io.elice.shoppingmall.domain.bill.entity.Bill;
+import io.elice.shoppingmall.domain.delivery.entity.Delivery;
+import io.elice.shoppingmall.domain.statuscode.entity.StatusCode;
+import io.elice.shoppingmall.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -17,15 +21,21 @@ public class Orders extends BassEntity {
     private Long id;
 
     private String title;
-    private String orders_status;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private StatusCode statusCode;
 
     private Long amount;
-    private Long user_id;
-    private Long delivery_id;
-    private Long bill_id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User user;
+
+    @OneToOne
+    private Delivery delivery;
+
+    @OneToOne
+    private Bill bill;
 
     private String payment;
 
-    private LocalDateTime created_at;
-    private LocalDateTime modified_at;
 }

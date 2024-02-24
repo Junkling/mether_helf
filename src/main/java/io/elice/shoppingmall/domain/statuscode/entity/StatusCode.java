@@ -16,7 +16,4 @@ public class StatusCode extends BassEntity{
     private Long id;
 
     private String name;
-
-    private LocalDateTime created_at;
-    private LocalDateTime modified_at;
 }
