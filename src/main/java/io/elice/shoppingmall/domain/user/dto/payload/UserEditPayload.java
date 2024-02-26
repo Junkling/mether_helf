@@ -1,4 +1,4 @@
-package io.elice.shoppingmall.web.payload.user;
+package io.elice.shoppingmall.domain.user.dto.payload;
 
 import lombok.Data;
 

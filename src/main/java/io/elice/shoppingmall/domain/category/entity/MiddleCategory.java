@@ -1,6 +1,6 @@
 package io.elice.shoppingmall.domain.category.entity;
 
-import io.elice.shoppingmall.common.BassEntity;
+import io.elice.shoppingmall.domain.common.BassEntity;
 import jakarta.persistence.*;
 import lombok.*;
 

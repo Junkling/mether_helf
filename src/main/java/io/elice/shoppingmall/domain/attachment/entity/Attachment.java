@@ -1,12 +1,9 @@
 package io.elice.shoppingmall.domain.attachment.entity;
 
-import io.elice.shoppingmall.common.BassEntity;
+import io.elice.shoppingmall.domain.common.BassEntity;
 import io.elice.shoppingmall.domain.item.entity.Item;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Builder
 @Entity

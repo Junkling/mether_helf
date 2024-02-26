@@ -1,6 +1,6 @@
 package io.elice.shoppingmall.domain.orders.entity;
 
-import io.elice.shoppingmall.common.BassEntity;
+import io.elice.shoppingmall.domain.common.BassEntity;
 import io.elice.shoppingmall.domain.bill.entity.Bill;
 import io.elice.shoppingmall.domain.delivery.entity.Delivery;
 import io.elice.shoppingmall.domain.statuscode.entity.StatusCode;
@@ -8,7 +8,6 @@ import io.elice.shoppingmall.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @Getter

@@ -1,8 +1,8 @@
 package io.elice.shoppingmall.domain.user.service;
 
-import io.elice.shoppingmall.web.payload.user.SignInPayload;
-import io.elice.shoppingmall.web.payload.user.SignUpPayload;
-import io.elice.shoppingmall.web.payload.user.UserEditPayload;
+import io.elice.shoppingmall.domain.user.dto.payload.SignInPayload;
+import io.elice.shoppingmall.domain.user.dto.payload.SignUpPayload;
+import io.elice.shoppingmall.domain.user.dto.payload.UserEditPayload;
 
 public interface UserService {
     Long save(SignUpPayload payload);

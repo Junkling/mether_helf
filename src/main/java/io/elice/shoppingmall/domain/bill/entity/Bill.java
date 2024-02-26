@@ -1,6 +1,6 @@
 package io.elice.shoppingmall.domain.bill.entity;
 
-import io.elice.shoppingmall.common.BassEntity;
+import io.elice.shoppingmall.domain.common.BassEntity;
 import io.elice.shoppingmall.domain.orders.entity.Orders;
 import io.elice.shoppingmall.domain.statuscode.entity.StatusCode;
 import jakarta.persistence.*;

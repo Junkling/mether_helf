@@ -1,10 +1,9 @@
 package io.elice.shoppingmall.domain.statuscode.entity;
 
-import io.elice.shoppingmall.common.BassEntity;
+import io.elice.shoppingmall.domain.common.BassEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @Getter

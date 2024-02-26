@@ -1,12 +1,10 @@
 package io.elice.shoppingmall.domain.cart.entity;
 
-import io.elice.shoppingmall.common.BassEntity;
+import io.elice.shoppingmall.domain.common.BassEntity;
 import io.elice.shoppingmall.domain.item.entity.Item;
 import io.elice.shoppingmall.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.util.List;
 
 @Entity
 @Getter

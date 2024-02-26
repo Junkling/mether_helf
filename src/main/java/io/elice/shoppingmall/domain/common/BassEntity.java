@@ -1,4 +1,4 @@
-package io.elice.shoppingmall.common;
+package io.elice.shoppingmall.domain.common;
 
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;

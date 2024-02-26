@@ -1,8 +1,8 @@
-package io.elice.shoppingmall.web.api;
+package io.elice.shoppingmall.domain.user.controller;
 
 import io.elice.shoppingmall.domain.user.service.UserService;
-import io.elice.shoppingmall.web.payload.user.SignInPayload;
-import io.elice.shoppingmall.web.payload.user.SignUpPayload;
+import io.elice.shoppingmall.domain.user.dto.payload.SignInPayload;
+import io.elice.shoppingmall.domain.user.dto.payload.SignUpPayload;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
