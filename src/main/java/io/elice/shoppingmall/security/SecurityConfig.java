@@ -35,7 +35,7 @@ public class SecurityConfig {
                                         /* swagger v3 */
                                         "/v3/api-docs/**",
                                         "/swagger-ui/**").permitAll()
-                                .requestMatchers("/user/**").permitAll()
+                                .requestMatchers("/user/**", "/api/first_categories/**", "/api/second_categories/**").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtFilter, RequestCacheAwareFilter.class)
