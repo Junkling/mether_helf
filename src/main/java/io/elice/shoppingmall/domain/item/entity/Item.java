@@ -1,7 +1,7 @@
 package io.elice.shoppingmall.domain.item.entity;
 
 import io.elice.shoppingmall.domain.common.BassEntity;
-import io.elice.shoppingmall.domain.category.entity.MiddleCategory;
+import io.elice.shoppingmall.domain.category.entity.SecondCategory;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,7 +16,7 @@ public class Item extends BassEntity {
     private Long id;
 
     @ManyToOne
-    private MiddleCategory middleCategory;
+    private SecondCategory secondCategory;
 
     private String name;
 
