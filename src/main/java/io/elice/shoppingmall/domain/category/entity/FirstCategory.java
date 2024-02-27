@@ -1,5 +1,6 @@
 package io.elice.shoppingmall.domain.category.entity;
 
+import io.elice.shoppingmall.domain.category.dto.payload.FirstCategoryUpdatePayload;
 import io.elice.shoppingmall.domain.common.BassEntity;
 import io.elice.shoppingmall.domain.code.Role;
 import jakarta.persistence.*;
@@ -18,13 +19,17 @@ public class FirstCategory extends BassEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Enumerated(EnumType.STRING)
-    private Role role;
+    //@Enumerated(EnumType.STRING)
+    private String role;
 
     private String name;
 
-    @OneToMany(mappedBy = "firstCategory")
-    private List<MiddleCategory> middleCategories = new ArrayList<>();
+    @OneToMany(mappedBy = "firstCategory", cascade = CascadeType.REMOVE,orphanRemoval = true)
+    private List<SecondCategory> secondCategoryList = new ArrayList<>();
 
+    public void updateFirstCategory(FirstCategoryUpdatePayload payload) {
+        this.role = payload.getRole();
+        this.name = payload.getName();
+    }
 
 }
