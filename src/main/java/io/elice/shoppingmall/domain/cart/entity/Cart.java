@@ -23,4 +23,8 @@ public class Cart extends BassEntity {
     @ManyToOne
     private Item item;
 
+    public void updateCart(Item item) {
+        this.item = item;
+    }
+
 }
