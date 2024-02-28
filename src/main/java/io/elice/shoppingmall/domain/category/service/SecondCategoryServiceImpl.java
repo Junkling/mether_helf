@@ -52,6 +52,7 @@ public class SecondCategoryServiceImpl implements SecondCategoryService {
         return secondCategory.getId();
     }
 
+    @Transactional
     @Override
     public Long deleteSecondCategory(Long id) {
         secondCategoryRepository.deleteById(id);

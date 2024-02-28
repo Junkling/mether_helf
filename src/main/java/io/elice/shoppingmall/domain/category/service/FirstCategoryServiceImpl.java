@@ -63,6 +63,7 @@ public class FirstCategoryServiceImpl implements FirstCategoryService {
         return firstCategory.getId();
     }
 
+    @Transactional
     @Override
     public Long deleteFirstCategory(Long id) {
 //        FirstCategory firstCategory = firstCategoryRepository.findById(id).orElseThrow();
