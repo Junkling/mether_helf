@@ -7,5 +7,5 @@ import lombok.Setter;
 @Setter
 public class SecondCategoryUpdatePayload {
     private String name;
-    private Long FirstCategoryId;
+    private Long firstCategoryId;
 }
