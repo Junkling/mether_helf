@@ -29,7 +29,7 @@ public class FirstCategoryController {
     @PostMapping
     @Operation(summary = "대카테고리 생성", description = "대카테고리 생성")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = Long.class))),
+            @ApiResponse(responseCode = "201", description = "성공", content = @Content(schema = @Schema(implementation = Long.class))),
             @ApiResponse(responseCode = "500", description = "에러", content = @Content(schema = @Schema(implementation = Long.class)))})
     public ResponseEntity<Long> saveFirstCategory(@RequestBody FirstCategoryCreatePayload payload) {
         Long saved = firstCategoryService.saveFirstCategory(payload);
@@ -48,32 +48,32 @@ public class FirstCategoryController {
 //        return response;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{firstCategoryId}")
     @Operation(summary = "대카테고리 단건 조회", description = "대카테고리 단건 조회")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = Long.class))),
-            @ApiResponse(responseCode = "500", description = "에러", content = @Content(schema = @Schema(implementation = Long.class)))})
-    public ResponseEntity<FirstCategoryDetailResult> findById(@PathVariable(name = "id") Long firstCategoryId) {
+            @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = FirstCategoryDetailResult.class))),
+            @ApiResponse(responseCode = "500", description = "에러", content = @Content(schema = @Schema(implementation = FirstCategoryDetailResult.class)))})
+    public ResponseEntity<FirstCategoryDetailResult> findById(@PathVariable(name = "firstCategoryId") Long firstCategoryId) {
         FirstCategoryDetailResult byId = firstCategoryService.findById(firstCategoryId);
         return new ResponseEntity<>(byId, HttpStatus.OK);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{firstCategoryId}")
     @Operation(summary = "대카테고리 수정", description = "대카테고리 수정")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = Long.class))),
             @ApiResponse(responseCode = "500", description = "에러", content = @Content(schema = @Schema(implementation = Long.class)))})
-    public ResponseEntity<Long> updateFirstCategory(@PathVariable(name = "id") Long id, @RequestBody FirstCategoryUpdatePayload payload) {
+    public ResponseEntity<Long> updateFirstCategory(@PathVariable(name = "firstCategoryId") Long id, @RequestBody FirstCategoryUpdatePayload payload) {
         Long updated = firstCategoryService.updateFirstCategory(id, payload);
         return new ResponseEntity<>(updated, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{firstCategoryId}")
     @Operation(summary = "대카테고리 삭제", description = "대카테고리 삭제")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = Long.class))),
             @ApiResponse(responseCode = "500", description = "에러", content = @Content(schema = @Schema(implementation = Long.class)))})
-    public ResponseEntity<Long> deleteFirstCategory(@PathVariable(name = "id") Long id) {
+    public ResponseEntity<Long> deleteFirstCategory(@PathVariable(name = "firstCategoryId") Long id) {
         Long deleted = firstCategoryService.deleteFirstCategory(id);
         return new ResponseEntity<>(deleted, HttpStatus.OK);
     }
