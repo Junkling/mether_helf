@@ -37,4 +37,6 @@ public class Orders extends BassEntity {
 
     private String payment;
 
+    public void updateOrders(StatusCode statusCode) {
+    }
 }
