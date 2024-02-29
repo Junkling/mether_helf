@@ -28,38 +28,38 @@ public class SecondCategoryController {
     @PostMapping
     @Operation(summary = "중카테고리 생성", description = "중카테고리 생성")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = Long.class))),
+            @ApiResponse(responseCode = "201", description = "성공", content = @Content(schema = @Schema(implementation = Long.class))),
             @ApiResponse(responseCode = "500", description = "에러", content = @Content(schema = @Schema(implementation = Long.class)))})
     public ResponseEntity<Long> saveSecondCategory(@RequestBody SecondCategoryCreatePayload payload) {
         Long saved = secondCategoryService.saveSecondCategory(payload);
         return new ResponseEntity<>(saved, HttpStatus.CREATED);
     }
 
-    @GetMapping("/list/{first_category_id}")
+    @GetMapping("/list/{firstCategoryId}")
     @Operation(summary = "중카테고리 전체 조회", description = "중카테고리 전체 조회")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = List.class))),
             @ApiResponse(responseCode = "500", description = "에러", content = @Content(schema = @Schema(implementation = List.class)))})
-    public ResponseEntity<List<SecondCategoryResult>> findSecondCategories(@PathVariable(name = "first_category_id") Long id) {
+    public ResponseEntity<List<SecondCategoryResult>> findSecondCategories(@PathVariable(name = "firstCategoryId") Long id) {
         List<SecondCategoryResult> secondCategories = secondCategoryService.findSecondCategories(id);
         return new ResponseEntity<>(secondCategories, HttpStatus.OK);
     }
-    @PutMapping("/{id}")
+    @PutMapping("/{secondCategoryId}")
     @Operation(summary = "중카테고리 수정", description = "중카테고리 수정")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = Long.class))),
             @ApiResponse(responseCode = "500", description = "에러", content = @Content(schema = @Schema(implementation = Long.class)))})
-    public ResponseEntity<Long> updateSecondCategory(@PathVariable(name = "id") Long id, SecondCategoryUpdatePayload payload) {
+    public ResponseEntity<Long> updateSecondCategory(@PathVariable(name = "secondCategoryId") Long id, SecondCategoryUpdatePayload payload) {
         Long updated = secondCategoryService.updateSecondCategory(id, payload);
         return new ResponseEntity<>(updated, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{secondCategoryId}")
     @Operation(summary = "중카테고리 삭제", description = "중카테고리 삭제")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = Long.class))),
             @ApiResponse(responseCode = "500", description = "에러", content = @Content(schema = @Schema(implementation = Long.class)))})
-   public ResponseEntity<Long> deleteSecondCategories(@PathVariable(name = "id") Long id) {
+   public ResponseEntity<Long> deleteSecondCategories(@PathVariable(name = "secondCategoryId") Long id) {
         Long deleted = secondCategoryService.deleteSecondCategory(id);
         return new ResponseEntity<>(deleted, HttpStatus.OK);
     }
