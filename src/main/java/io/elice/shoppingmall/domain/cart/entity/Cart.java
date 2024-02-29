@@ -23,4 +23,6 @@ public class Cart extends BassEntity {
     @ManyToOne
     private Item item;
 
+    private Integer count;
+
 }

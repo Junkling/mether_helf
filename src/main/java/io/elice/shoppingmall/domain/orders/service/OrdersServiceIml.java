@@ -1,6 +1,11 @@
 package io.elice.shoppingmall.domain.orders.service;
+import io.elice.shoppingmall.domain.bill.entity.Bill;
 import io.elice.shoppingmall.domain.bill.repository.BillRepository;
+import io.elice.shoppingmall.domain.cart.repository.CartRepository;
+import io.elice.shoppingmall.domain.delivery.entity.Delivery;
 import io.elice.shoppingmall.domain.delivery.repository.DeliveryRepository;
+import io.elice.shoppingmall.domain.orderitem.entity.OrderItem;
+import io.elice.shoppingmall.domain.orderitem.repository.OrderItemRepository;
 import io.elice.shoppingmall.domain.orders.dto.payload.*;
 import io.elice.shoppingmall.domain.orders.dto.result.OrdersResult;
 import io.elice.shoppingmall.domain.orders.entity.Orders;
@@ -22,6 +27,8 @@ public class OrdersServiceIml implements OrdersService{
     private final OrdersRepository ordersRepository;
     private final UserRepository userRepository;
     private final StatusCodeRepository statusCodeRepository;
+    private final OrderItemRepository orderItemRepository;
+    private final CartRepository cartRepository;
     private final BillRepository billRepository;
     private final DeliveryRepository deliveryRepository;
     private final OrdersResultMapper ordersResultMapper;
@@ -31,6 +38,19 @@ public class OrdersServiceIml implements OrdersService{
     public Long saveOrder(OrdersCreatePayload payload){
         User user = userRepository.findById(payload.getUserId()).orElseThrow();
         Orders saved = ordersRepository.save(Orders.builder().user(user).build());
+        deliveryRepository.save(Delivery.builder().address(payload.getAddress()).orders(saved).build());
+//        Bill.builder(). 어쩌구 저쩌구 Delivery랑 똑같이 저장
+        payload.getCartId().stream().map(c -> cartRepository.findById(c).orElseThrow()).forEach(e -> orderItemRepository.save(
+                OrderItem.builder()
+                        .orders(saved)
+                        .item(e.getItem())
+                        .count(e.getCount())
+                        .itemPrice(e.getItem().getPrice())
+                        .itemName(e.getItem().getName())
+                        .amount(e.getCount() * e.getItem().getPrice())
+                        .build()));
+
+        payload.getCartId().stream().forEach(c -> cartRepository.deleteById(c));
 
         return saved.getId();
     }

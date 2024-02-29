@@ -19,6 +19,7 @@ public class Orders extends BassEntity {
     @Column(name = "orders_id")
     private Long id;
 
+    // 뭐 생각하고 만든 필드냐면 대표상품명 같은걸 만들려고 넣은애
     private String title;
 
     @ManyToOne(fetch = FetchType.LAZY)
