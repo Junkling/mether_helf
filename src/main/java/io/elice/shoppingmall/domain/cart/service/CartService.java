@@ -19,4 +19,6 @@ public interface CartService {
 
     Long deleteCart(Long id);
 
+    void deleteAllCart(Long userId);
+
 }

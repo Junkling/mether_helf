@@ -39,7 +39,7 @@ public class CartServiceIml implements CartService {
 
     @Override
     public List<CartResult> findCarts(Long userId) {
-        List<Cart> cartList = cartRepository.findByUserId(userId);
+        List<Cart> cartList = cartRepository.findAllByUserId(userId);
         List<CartResult> dtoList = cartResultMapper.toDtoList(cartList);
         return dtoList;
     }
@@ -54,9 +54,8 @@ public class CartServiceIml implements CartService {
     @Transactional
     @Override
     public Long updateCart(Long id, CartUpdatePayload payload) {
-        Item item = itemRepository.findById(payload.getItemId()).orElseThrow();
         Cart cart = cartRepository.findById(id).orElseThrow();
-        cart.updateCart(item);
+        cart.updateCart(payload.getCount());
         return cart.getId();
     }
 
@@ -66,4 +65,14 @@ public class CartServiceIml implements CartService {
         cartRepository.deleteById(id);
         return id;
     }
+
+    // 장바구니 전체 삭제
+    @Transactional
+    @Override
+    public void deleteAllCart(Long userId) {
+        List<Cart> allByUserId = cartRepository.findAllByUserId(userId);
+        cartRepository.deleteAll(allByUserId);
+    }
+
+
 }

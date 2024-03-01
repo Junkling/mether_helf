@@ -6,9 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CartUpdatePayload {
-    private Long id;
-    private Long userId;
-    private Long itemId;
+    private Integer count;
 }
 
 
