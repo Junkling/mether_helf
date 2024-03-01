@@ -24,8 +24,18 @@ public class Item extends BassEntity {
 
     private Integer stock;
 
+    // 상품설명 넣을 것 인가?
+
     private Integer sellCount;
 
     private Integer discountPer;
+
+    public void updateItem(String name, Integer price, Integer stock, Integer sellCount, Integer discountPer) {
+        this.name = name;
+        this.price = price;
+        this.stock = stock;
+        this.sellCount = sellCount;
+        this.discountPer = discountPer;
+    }
 
 }
