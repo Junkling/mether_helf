@@ -27,7 +27,9 @@ public class JwtUtil {
     private SecretKey secretKey;
     public final String[] allowedUrls = {
             "/",
-            "/user/**"
+            "/user/**",
+            "/api/first_categories/**",
+            "/api/second_categories/**"
     };
 
 
