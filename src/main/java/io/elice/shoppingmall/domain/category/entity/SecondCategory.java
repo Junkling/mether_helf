@@ -1,5 +1,6 @@
 package io.elice.shoppingmall.domain.category.entity;
 
+import io.elice.shoppingmall.domain.category.dto.payload.SecondCategoryUpdatePayload;
 import io.elice.shoppingmall.domain.common.BassEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -9,7 +10,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class MiddleCategory extends BassEntity {
+public class SecondCategory extends BassEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,6 +19,12 @@ public class MiddleCategory extends BassEntity {
     private String name;
 
     @ManyToOne
+    @JoinColumn(name = "first_category_id")
     private FirstCategory firstCategory;
+
+    public void updateSecondCategory(String name, FirstCategory firstCategory) {
+        this.name = name;
+        this.firstCategory = firstCategory;
+    }
 
 }

@@ -1,7 +1,7 @@
 package io.elice.shoppingmall.domain.item.entity;
 
 import io.elice.shoppingmall.domain.common.BassEntity;
-import io.elice.shoppingmall.domain.category.entity.MiddleCategory;
+import io.elice.shoppingmall.domain.category.entity.SecondCategory;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,7 +16,7 @@ public class Item extends BassEntity {
     private Long id;
 
     @ManyToOne
-    private MiddleCategory middleCategory;
+    private SecondCategory secondCategory;
 
     private String name;
 
@@ -24,8 +24,18 @@ public class Item extends BassEntity {
 
     private Integer stock;
 
+    // 상품설명 넣을 것 인가?
+
     private Integer sellCount;
 
     private Integer discountPer;
+
+    public void updateItem(String name, Integer price, Integer stock, Integer sellCount, Integer discountPer) {
+        this.name = name;
+        this.price = price;
+        this.stock = stock;
+        this.sellCount = sellCount;
+        this.discountPer = discountPer;
+    }
 
 }
