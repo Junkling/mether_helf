@@ -1,5 +1,6 @@
 package io.elice.shoppingmall.domain.user.controller;
 
+import io.elice.shoppingmall.domain.user.dto.payload.DuplicateCheckDto;
 import io.elice.shoppingmall.domain.user.service.UserService;
 import io.elice.shoppingmall.domain.user.dto.payload.SignInPayload;
 import io.elice.shoppingmall.domain.user.dto.payload.SignUpPayload;
@@ -16,7 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/users")
 @RequiredArgsConstructor
 @Tag(name = "(계정)", description = "계정 관련")
 public class UserController {
@@ -37,16 +38,13 @@ public class UserController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = Boolean.class))),
             @ApiResponse(responseCode = "500", description = "에러", content = @Content(schema = @Schema(implementation = Boolean.class)))})
-    public ResponseEntity<Boolean> duplicateCheck(@RequestParam(name = "id",required = false) String id
-            ,@RequestParam(name = "nickname",required = false) String nickname
-            ,@RequestParam(name = "email",required = false) String email) {
-
-        userService.duplicateIdCheck(id);
-        userService.duplicateNicknameCheck(nickname);
-        userService.duplicateEmailCheck(email);
-
+    public ResponseEntity<Boolean> duplicateCheck(@RequestParam(name = "username",required = false) String username
+            ,@RequestParam(name = "email",required = false) String email
+            ,@RequestParam(name = "nickname",required = false) String nickname) {
+        userService.checkDuplicate(new DuplicateCheckDto(username, email, nickname));
         return new ResponseEntity<>(true, HttpStatus.OK);
     }
+
     @PostMapping(value = "/login")
     @Operation(summary="로그인", description="로그인")
     @ApiResponses( value = {

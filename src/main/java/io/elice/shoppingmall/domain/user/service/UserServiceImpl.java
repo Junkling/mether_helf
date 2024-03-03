@@ -1,5 +1,6 @@
 package io.elice.shoppingmall.domain.user.service;
 
+import io.elice.shoppingmall.domain.user.dto.payload.DuplicateCheckDto;
 import io.elice.shoppingmall.domain.user.entity.User;
 import io.elice.shoppingmall.domain.user.repository.UserRepository;
 import io.elice.shoppingmall.security.JwtUtil;
@@ -12,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.stream.Stream;
 
@@ -61,27 +63,19 @@ public class UserServiceImpl implements UserService {
         return jwtUtil.generate(new MyTokenPayload(user.getId(), user.getUsername(), user.getRoles()));
     }
 
-    @Override
-    public Boolean duplicateIdCheck(String payload) {
-        if (userRepository.existsByUsername(payload))
-            throw new EntityExistsException("이미 존재하는 아이디입니다.");
-        else
-            return true;
-    }
 
     @Override
-    public Boolean duplicateEmailCheck(String payload) {
-        if (userRepository.existsByEmail(payload))
-            throw new EntityExistsException("이미 존재하는 이메일입니다.");
-        else
-            return true;
-    }
-
-    @Override
-    public Boolean duplicateNicknameCheck(String payload) {
-        if (userRepository.existsByNickname(payload))
-            throw new EntityExistsException("이미 존재하는 닉네임입니다.");
-        else
-            return true;
+    public Boolean checkDuplicate(DuplicateCheckDto dto) {
+        if (StringUtils.hasText(dto.getUsername())) {
+            if (userRepository.existsByUsername(dto.getUsername()))
+                throw new EntityExistsException("이미 존재하는 아이디입니다.");
+        } else if (StringUtils.hasText(dto.getEmail())) {
+            if (userRepository.existsByEmail(dto.getEmail()))
+                throw new EntityExistsException("이미 존재하는 이메일입니다.");
+        } else if (StringUtils.hasText(dto.getNickname())) {
+            if (userRepository.existsByNickname(dto.getNickname()))
+                throw new EntityExistsException("이미 존재하는 닉네임입니다.");
+        }
+        return true;
     }
 }
