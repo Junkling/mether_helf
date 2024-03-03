@@ -26,10 +26,20 @@ public class JwtUtil {
     private long expiration;
     private SecretKey secretKey;
     public final String[] allowedUrls = {
+            "/v2/api-docs",
+            "/swagger-resources",
+            "/swagger-resources/**",
+            "/configuration/ui",
+            "/configuration/security",
+            "/swagger-ui.html",
+            "/webjars/**",
+            /* swagger v3 */
+            "/v3/api-docs/**",
+            "/swagger-ui/**",
             "/",
             "/user/**",
             "/api/first_categories/**",
-            "/api/second_categories/**"
+            "/error"
     };
 
 

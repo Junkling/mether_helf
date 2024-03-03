@@ -1,13 +1,12 @@
 package io.elice.shoppingmall.security;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.ProviderManager;
@@ -36,8 +35,8 @@ public class JwtFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        String path = request.getRequestURI();
-        return Arrays.stream(jwtUtil.allowedUrls).anyMatch(item -> path.startsWith(item) && !path.equals("/project")); // true면 fileter 안 탐
+//        String path = request.getRequestURI();
+        return Arrays.stream(jwtUtil.allowedUrls).anyMatch(item -> item.equalsIgnoreCase(request.getServletPath())); // true면 fileter 안 탐
     }
 
     @Override
@@ -56,16 +55,18 @@ public class JwtFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authenticationResult);
             }
 
-        } catch (Exception e) {
+        } catch (ExpiredJwtException e) {
             SecurityContextHolder.clearContext();
 
-            response.setStatus(HttpStatus.UNAUTHORIZED.value());
-            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-            response.setCharacterEncoding("UTF-8");
-            response.getWriter().print(e.getMessage());
-            response.getWriter().flush();
+            response.sendError(401, e.getMessage());
+            return;
+        }catch (Exception e) {
+            SecurityContextHolder.clearContext();
+
+            response.setStatus(400);
             return;
         }
+
 
         filterChain.doFilter(request, response);
     }
