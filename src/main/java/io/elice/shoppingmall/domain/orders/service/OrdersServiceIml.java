@@ -37,7 +37,7 @@ public class OrdersServiceIml implements OrdersService{
     @Override
     public Long saveOrder(OrdersCreatePayload payload){
         User user = userRepository.findById(payload.getUserId()).orElseThrow();
-        Orders saved = ordersRepository.save(Orders.builder().user(user).build());
+        Orders saved = ordersRepository.save(Orders.builder().user(user).payment(payload.getPayment()).build());
         deliveryRepository.save(Delivery.builder().address(payload.getAddress()).orders(saved).build());
 //        Bill.builder(). 어쩌구 저쩌구 Delivery랑 똑같이 저장
         payload.getCartId().stream().map(c -> cartRepository.findById(c).orElseThrow()).forEach(e -> orderItemRepository.save(
