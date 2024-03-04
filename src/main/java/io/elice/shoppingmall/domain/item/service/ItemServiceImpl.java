@@ -12,6 +12,8 @@ import io.elice.shoppingmall.util.mapsturct.item.ItemDetailResultMapper;
 import io.elice.shoppingmall.util.mapsturct.item.ItemResultMapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -31,6 +33,7 @@ public class ItemServiceImpl implements ItemService {
         Item save = itemRepository.save(
                 Item.builder()
                         .name(payload.getName())
+                        .content(payload.getContent())
                         .price(payload.getPrice())
                         .stock(payload.getStock())
                         .sellCount(payload.getSellCount())
@@ -38,6 +41,15 @@ public class ItemServiceImpl implements ItemService {
                         .secondCategory(secondCategory)
                         .build());
         return save.getId();
+    }
+
+    // Pagination 조회
+    @Override
+    public Page<ItemResult> findPageItems(Long secondCategoryId, Pageable pageable) {
+        Page<Item> bySecondCategoryId = itemRepository.findAllBySecondCategoryId(secondCategoryId, pageable);
+        Page<ItemResult> dtoPage = itemResultMapper.toDtoPage(bySecondCategoryId);
+//        bySecondCategoryId.map(item -> new ItemResult())
+        return dtoPage;
     }
 
     // 유저가 세컨드 카테고리를 통해서 아이템리스트을 조회시 사용
@@ -74,7 +86,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public Long updateItem(Long id, ItemUpdatePayload payload) {
         Item item = itemRepository.findById(id).orElseThrow();
-        item.updateItem(payload.getName(), payload.getPrice(), payload.getStock(), payload.getSellCount(), payload.getDiscountPer());
+        item.updateItem(payload.getName(), payload.getContent() ,payload.getPrice(), payload.getStock(), payload.getSellCount(), payload.getDiscountPer());
         return item.getId();
     }
 
