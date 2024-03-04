@@ -20,7 +20,7 @@ public class OrderItem extends BassEntity {
     private Item item;
 
     private String itemName;
-    private String itemPrice;
+    private Integer itemPrice;
     private Integer count;
     private Integer amount;
 
