@@ -29,7 +29,9 @@ public class JwtUtil {
             "/",
             "/user/**",
             "/api/first_categories/**",
-            "/api/second_categories/**"
+            "/api/second_categories/**",
+            "/api/carts/**",
+            "/api/items/**"
     };
 
 
