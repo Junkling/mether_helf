@@ -1,6 +1,8 @@
 package io.elice.shoppingmall.domain.orders.controller;
 
 import io.elice.shoppingmall.domain.orders.dto.payload.OrdersCreatePayload;
+import io.elice.shoppingmall.domain.orders.dto.payload.OrdersUpdatePayload;
+import io.elice.shoppingmall.domain.orders.dto.result.OrdersResult;
 import io.elice.shoppingmall.domain.orders.service.OrdersService;
 import io.elice.shoppingmall.domain.orders.entity.Orders;
 import io.swagger.v3.oas.annotations.Operation;
@@ -17,6 +19,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/orders")
 @RequiredArgsConstructor
@@ -25,44 +29,46 @@ public class OrdersController {
 
     private final OrdersService ordersService;
 
-    @GetMapping("/admin-orders")
-    @Operation(summary = "관리자 주문내역 조회", description = "관리자 주문내역 조회")
+    @GetMapping("/list")
+    @Operation(summary = "주문내역 전체조회", description = "주문내역 전체조회")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "성공", content = @Content(schema = @Schema(implementation = Long.class))),
+            @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = Long.class))),
             @ApiResponse(responseCode = "500", description = "에러", content = @Content(schema = @Schema(implementation = Long.class)))})
-    public String viewAdminOrderPage(Long adminId){
-        return "admin-orders/admin-orders";
+    public ResponseEntity<List<OrdersResult>> findAllOrders(){
+        List<OrdersResult> orders = ordersService.findOrders();
+        return new ResponseEntity<>(orders, HttpStatus.OK);
     }
 
-    @PostMapping("/new")
-    @Operation(summary = "주문 생성", description = "주문 생성")
+    @GetMapping("/list/{orderId}")
+    @Operation(summary = "장바구니 수정", description = "장바구니 수정")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "성공", content = @Content(schema = @Schema(implementation = Long.class))),
+            @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = Long.class))),
             @ApiResponse(responseCode = "500", description = "에러", content = @Content(schema = @Schema(implementation = Long.class)))})
-    public String saveOrder(@RequestBody OrdersCreatePayload payload, Model model){
-        Long savedOrder = ordersService.saveOrder(payload);
-        model.addAttribute("savedOrder", savedOrder);
-        return "order-complete/order-complete";
+    public ResponseEntity<OrdersResult> findOrder(@PathVariable(name = "orderId")Long orderId){
+        OrdersResult ordersResult = ordersService.findOrder(orderId);
+        return new ResponseEntity<>(ordersResult, HttpStatus.OK);
     }
 
-    @GetMapping
-    @Operation(summary = "주문창 조회", description = "주문창 조회")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "성공", content = @Content(schema = @Schema(implementation = Long.class))),
-            @ApiResponse(responseCode = "500", description = "에러", content = @Content(schema = @Schema(implementation = Long.class)))})
-    public String viewOrderPage(Model model){
-        return "order/order";
+    @PostMapping
+    public ResponseEntity<Long> saveOrder(@RequestBody OrdersCreatePayload ordersCreatePayload){
+        Long saved = ordersService.saveOrder(ordersCreatePayload);
+        return new ResponseEntity<>(saved, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/{orderId}")
+    public ResponseEntity<Long> updateOrder(@PathVariable(name = "orderId")Long orderId, OrdersUpdatePayload ordersUpdatePayload){
+        Long updated = ordersService.updateOrder(orderId, ordersUpdatePayload);
+        return new ResponseEntity<>(updated, HttpStatus.OK);
     }
 
     @DeleteMapping("/{orderId}")
-    @Operation(summary = "주문 내역 삭제", description = "주문 내역 삭제")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "성공", content = @Content(schema = @Schema(implementation = Long.class))),
-            @ApiResponse(responseCode = "500", description = "에러", content = @Content(schema = @Schema(implementation = Long.class)))})
-    public ResponseEntity<Long> deleteOrders(@PathVariable(name = "orderId") Long id){
-        Long deletedOrder = ordersService.deleteOrder(id);
-        return new ResponseEntity<>(deletedOrder, HttpStatus.OK);
+    public ResponseEntity<Long> deleteOrder(@PathVariable(name = "orderId")Long orderId){
+        Long deleted = ordersService.deleteOrder(orderId);
+        return new ResponseEntity<>(deleted, HttpStatus.OK);
     }
+
+
+
 
 
 

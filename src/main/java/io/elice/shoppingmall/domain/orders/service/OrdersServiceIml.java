@@ -54,13 +54,20 @@ public class OrdersServiceIml implements OrdersService{
 
         return saved.getId();
     }
-
     @Override
-    public List<OrdersResult> findOrders(Long userId){
-        List<Orders> ordersList = ordersRepository.findByUserId(userId);
+    public List<OrdersResult> findOrders(){
+        List<Orders> ordersList = ordersRepository.findAll();
         List<OrdersResult> dtoList = ordersResultMapper.toDtoList(ordersList);
+
         return dtoList;
     }
+
+//    @Override
+//    public List<OrdersResult> findOrders(Long userId){
+//        List<Orders> ordersList = ordersRepository.findByUserId(userId);
+//        List<OrdersResult> dtoList = ordersResultMapper.toDtoList(ordersList);
+//        return dtoList;
+//    }
 
     @Override
     public OrdersResult findOrder(Long id){
