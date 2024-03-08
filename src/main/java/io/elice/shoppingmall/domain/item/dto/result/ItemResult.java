@@ -10,6 +10,8 @@ public class ItemResult {
 
     private String name;
 
+    private String content;
+
     private Integer price;
 
     private Integer discountPer;

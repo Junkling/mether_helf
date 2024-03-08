@@ -27,7 +27,8 @@ public class SecondCategoryServiceImpl implements SecondCategoryService {
     @Transactional
     @Override
     public Long saveSecondCategory(SecondCategoryCreatePayload payload) {
-        FirstCategory firstCategory = firstCategoryRepository.findById(payload.getFirstCategoryId()).orElseThrow();
+        FirstCategory firstCategory = firstCategoryRepository.findById(payload.getFirstCategoryId())
+                .orElseThrow(() -> new IllegalArgumentException("해당 대카테고리가 없습니다. firstCategoryId=" + payload.getFirstCategoryId()));
         SecondCategory secondCategory = secondCategoryRepository.save(
                 SecondCategory.builder()
                         .name(payload.getName())
@@ -46,8 +47,10 @@ public class SecondCategoryServiceImpl implements SecondCategoryService {
     @Transactional
     @Override
     public Long updateSecondCategory(Long id, SecondCategoryUpdatePayload payload) {
-        FirstCategory firstCategory = firstCategoryRepository.findById(payload.getFirstCategoryId()).orElseThrow();
-        SecondCategory secondCategory = secondCategoryRepository.findById(id).orElseThrow();
+        FirstCategory firstCategory = firstCategoryRepository.findById(payload.getFirstCategoryId())
+                .orElseThrow(() -> new IllegalArgumentException("해당 대카테고리가 없습니다. firstCategoryId=" + payload.getFirstCategoryId()));
+        SecondCategory secondCategory = secondCategoryRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 중카테고리가 없습니다. id=" + id));
         secondCategory.updateSecondCategory(payload.getName(), firstCategory);
         return secondCategory.getId();
     }

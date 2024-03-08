@@ -37,10 +37,12 @@ public class JwtUtil {
             "/v3/api-docs/**",
             "/swagger-ui/**",
             "/",
-            "/user/**",
+            "/api/users/**",
             "/api/first_categories/**",
             "/error",
-            "/api/orders/**"
+            "/api/second_categories/**",
+            "/api/carts/**",
+            "/api/items/**"
     };
 
 
