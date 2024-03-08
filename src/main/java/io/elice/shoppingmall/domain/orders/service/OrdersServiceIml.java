@@ -37,7 +37,7 @@ public class OrdersServiceIml implements OrdersService{
     @Override
     public Long saveOrder(OrdersCreatePayload payload){
         User user = userRepository.findById(payload.getUserId()).orElseThrow();
-        Orders saved = ordersRepository.save(Orders.builder().user(user).build());
+        Orders saved = ordersRepository.save(Orders.builder().user(user).payment(payload.getPayment()).build());
         deliveryRepository.save(Delivery.builder().address(payload.getAddress()).orders(saved).build());
 //        Bill.builder(). 어쩌구 저쩌구 Delivery랑 똑같이 저장
         payload.getCartId().stream().map(c -> cartRepository.findById(c).orElseThrow()).forEach(e -> orderItemRepository.save(
@@ -54,13 +54,20 @@ public class OrdersServiceIml implements OrdersService{
 
         return saved.getId();
     }
-
     @Override
-    public List<OrdersResult> findOrders(Long userId){
-        List<Orders> ordersList = ordersRepository.findByUserId(userId);
+    public List<OrdersResult> findOrders(){
+        List<Orders> ordersList = ordersRepository.findAll();
         List<OrdersResult> dtoList = ordersResultMapper.toDtoList(ordersList);
+
         return dtoList;
     }
+
+//    @Override
+//    public List<OrdersResult> findOrders(Long userId){
+//        List<Orders> ordersList = ordersRepository.findByUserId(userId);
+//        List<OrdersResult> dtoList = ordersResultMapper.toDtoList(ordersList);
+//        return dtoList;
+//    }
 
     @Override
     public OrdersResult findOrder(Long id){

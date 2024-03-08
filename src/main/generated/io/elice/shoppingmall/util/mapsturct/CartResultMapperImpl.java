@@ -2,6 +2,8 @@ package io.elice.shoppingmall.util.mapsturct;
 
 import io.elice.shoppingmall.domain.cart.dto.result.CartResult;
 import io.elice.shoppingmall.domain.cart.entity.Cart;
+import io.elice.shoppingmall.domain.item.dto.result.ItemCartResult;
+import io.elice.shoppingmall.domain.item.entity.Item;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.processing.Generated;
@@ -9,36 +11,53 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-02-29T17:59:05+0900",
-    comments = "version: 1.5.5.Final, compiler: javac, environment: Java 21.0.1 (Oracle Corporation)"
+    date = "2024-03-04T17:40:33+0900",
+    comments = "version: 1.5.5.Final, compiler: javac, environment: Java 19.0.2 (Amazon.com Inc.)"
 )
 @Component
 public class CartResultMapperImpl implements CartResultMapper {
 
     @Override
-    public CartResult toDto(Cart arg0) {
-        if ( arg0 == null ) {
+    public CartResult toDto(Cart entity) {
+        if ( entity == null ) {
             return null;
         }
 
         CartResult cartResult = new CartResult();
 
-        cartResult.setId( arg0.getId() );
+        cartResult.setId( entity.getId() );
+        cartResult.setItem( itemToItemCartResult( entity.getItem() ) );
+        cartResult.setCreatedDate( entity.getCreatedDate() );
 
         return cartResult;
     }
 
     @Override
-    public List<CartResult> toDtoList(List<Cart> arg0) {
-        if ( arg0 == null ) {
+    public List<CartResult> toDtoList(List<Cart> entities) {
+        if ( entities == null ) {
             return null;
         }
 
-        List<CartResult> list = new ArrayList<CartResult>( arg0.size() );
-        for ( Cart cart : arg0 ) {
+        List<CartResult> list = new ArrayList<CartResult>( entities.size() );
+        for ( Cart cart : entities ) {
             list.add( toDto( cart ) );
         }
 
         return list;
+    }
+
+    protected ItemCartResult itemToItemCartResult(Item item) {
+        if ( item == null ) {
+            return null;
+        }
+
+        ItemCartResult itemCartResult = new ItemCartResult();
+
+        itemCartResult.setId( item.getId() );
+        itemCartResult.setName( item.getName() );
+        itemCartResult.setPrice( item.getPrice() );
+        itemCartResult.setDiscountPer( item.getDiscountPer() );
+
+        return itemCartResult;
     }
 }

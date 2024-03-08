@@ -39,7 +39,8 @@ public class JwtUtil {
             "/",
             "/user/**",
             "/api/first_categories/**",
-            "/error"
+            "/error",
+            "/api/orders/**"
     };
 
 
