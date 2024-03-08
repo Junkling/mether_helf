@@ -18,7 +18,7 @@ public class SecondCategory extends BassEntity {
 
     private String name;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "first_category_id")
     private FirstCategory firstCategory;
 

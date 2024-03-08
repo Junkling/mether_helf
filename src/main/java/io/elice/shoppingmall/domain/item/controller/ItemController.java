@@ -12,6 +12,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,6 +36,18 @@ public class ItemController {
         Long saved = itemService.saveItem(payload);
         return new ResponseEntity<>(saved, HttpStatus.CREATED);
     }
+
+    // Pagination
+    @GetMapping("/List/{secondCategoryId}")
+    @Operation(summary = "상품리스트(페이지) 조회", description = "상품리스트(페이지) 조회")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = Page.class))),
+            @ApiResponse(responseCode = "500", description = "에러", content = @Content(schema = @Schema(implementation = Page.class)))})
+    public ResponseEntity<Page<ItemResult>> findPageItems(@PathVariable(name = "secondCategoryId") Long secondCategoryId, Pageable pageable) {
+        Page<ItemResult> pageItems = itemService.findPageItems(secondCategoryId, pageable);
+        return new ResponseEntity<>(pageItems, HttpStatus.OK);
+    }
+
 
     // 유저가 세컨드 카테고리를 통해서 아이템 리스트을 조회시 사용
     @GetMapping("/list/{secondCategoryId}")
