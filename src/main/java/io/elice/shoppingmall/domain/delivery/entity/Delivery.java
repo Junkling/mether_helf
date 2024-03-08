@@ -1,6 +1,7 @@
 package io.elice.shoppingmall.domain.delivery.entity;
 
 import io.elice.shoppingmall.domain.common.BassEntity;
+import io.elice.shoppingmall.domain.delivery.dto.payload.DeliveryUpdatePayload;
 import io.elice.shoppingmall.domain.orders.entity.Orders;
 import io.elice.shoppingmall.domain.statuscode.entity.StatusCode;
 import jakarta.persistence.*;
@@ -26,5 +27,9 @@ public class Delivery extends BassEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private StatusCode statusCode;
 
+    public void updateDelivery(String address, StatusCode statusCode) {
+        this.address = address;
+        this.statusCode = statusCode;
+    }
 
 }

@@ -6,6 +6,6 @@ import lombok.Setter;
 @Setter
 public class DeliveryUpdatePayload {
     private Long id;
-    private Long orderId;
     private String address;
+    private Long statusCodeId;
 }

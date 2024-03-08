@@ -20,4 +20,6 @@ public class OrdersCreatePayload {
 
     //지불 방법
     private String payment;
+
+    private Long statusId;
 }

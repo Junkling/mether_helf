@@ -1,4 +1,5 @@
 package io.elice.shoppingmall.domain.orders.dto.result;
+import io.elice.shoppingmall.domain.item.dto.result.ItemResult;
 import io.elice.shoppingmall.domain.item.entity.Item;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,7 +9,7 @@ import java.util.List;
 @Getter
 @Setter
 public class OrdersResult {
-    private Long orderId;
+    private Long id;
 
     private String title;
 
@@ -16,7 +17,9 @@ public class OrdersResult {
 
     private String address;
 
-    private List<Item> itemList;
+    private Long amount;
+
+    private List<ItemResult> itemList;
 
 
 }

@@ -13,6 +13,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -32,47 +34,54 @@ public class OrdersController {
     @GetMapping("/list")
     @Operation(summary = "주문내역 전체조회", description = "주문내역 전체조회")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = Long.class))),
-            @ApiResponse(responseCode = "500", description = "에러", content = @Content(schema = @Schema(implementation = Long.class)))})
-    public ResponseEntity<List<OrdersResult>> findAllOrders(){
-        List<OrdersResult> orders = ordersService.findOrders();
+            @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = Page.class))),
+            @ApiResponse(responseCode = "500", description = "에러", content = @Content(schema = @Schema(implementation = Page.class)))})
+    public ResponseEntity<Page<OrdersResult>> findAllOrders(@RequestParam(name = "userId", required = false) Long userId,
+            @RequestParam(name = "size", required = false) Integer size,
+            @RequestParam(name = "page", required = false) Integer page) {
+        Page<OrdersResult> orders = ordersService.findOrders(userId, PageRequest.of(page, size));
         return new ResponseEntity<>(orders, HttpStatus.OK);
     }
 
-    @GetMapping("/list/{orderId}")
-    @Operation(summary = "장바구니 수정", description = "장바구니 수정")
+    @GetMapping("/{orderId}")
+    @Operation(summary = "주문 단일 조회", description = "주문 단일 조회")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = Long.class))),
-            @ApiResponse(responseCode = "500", description = "에러", content = @Content(schema = @Schema(implementation = Long.class)))})
-    public ResponseEntity<OrdersResult> findOrder(@PathVariable(name = "orderId")Long orderId){
+            @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = OrdersResult.class))),
+            @ApiResponse(responseCode = "500", description = "에러", content = @Content(schema = @Schema(implementation = OrdersResult.class)))})
+    public ResponseEntity<OrdersResult> findOrder(@PathVariable(name = "orderId") Long orderId) {
         OrdersResult ordersResult = ordersService.findOrder(orderId);
         return new ResponseEntity<>(ordersResult, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<Long> saveOrder(@RequestBody OrdersCreatePayload ordersCreatePayload){
+    @Operation(summary = "주문 생성", description = "주문 생성")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = Long.class))),
+            @ApiResponse(responseCode = "500", description = "에러", content = @Content(schema = @Schema(implementation = Long.class)))})
+    public ResponseEntity<Long> saveOrder(@RequestBody OrdersCreatePayload ordersCreatePayload) {
         Long saved = ordersService.saveOrder(ordersCreatePayload);
         return new ResponseEntity<>(saved, HttpStatus.CREATED);
     }
 
-    @PostMapping("/{orderId}")
-    public ResponseEntity<Long> updateOrder(@PathVariable(name = "orderId")Long orderId, OrdersUpdatePayload ordersUpdatePayload){
+    @PutMapping("/{orderId}")
+    @Operation(summary = "주문 상태 수정", description = "주문 상태 수정")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = Long.class))),
+            @ApiResponse(responseCode = "500", description = "에러", content = @Content(schema = @Schema(implementation = Long.class)))})
+    public ResponseEntity<Long> updateOrder(@PathVariable(name = "orderId") Long orderId, @RequestBody OrdersUpdatePayload ordersUpdatePayload) {
         Long updated = ordersService.updateOrder(orderId, ordersUpdatePayload);
         return new ResponseEntity<>(updated, HttpStatus.OK);
     }
 
     @DeleteMapping("/{orderId}")
-    public ResponseEntity<Long> deleteOrder(@PathVariable(name = "orderId")Long orderId){
+    @Operation(summary = "주문 삭제", description = "주문 삭제")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = Long.class))),
+            @ApiResponse(responseCode = "500", description = "에러", content = @Content(schema = @Schema(implementation = Long.class)))})
+    public ResponseEntity<Long> deleteOrder(@PathVariable(name = "orderId") Long orderId) {
         Long deleted = ordersService.deleteOrder(orderId);
         return new ResponseEntity<>(deleted, HttpStatus.OK);
     }
-
-
-
-
-
-
-
 
 
 }

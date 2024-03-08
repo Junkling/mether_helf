@@ -7,5 +7,4 @@ import lombok.Setter;
 public class OrdersUpdatePayload {
     private Long orderId;
     private Long ordersStatus;
-    private Long amount;
 }
