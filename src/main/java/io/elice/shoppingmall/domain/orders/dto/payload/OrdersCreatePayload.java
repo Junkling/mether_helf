@@ -8,9 +8,6 @@ import java.util.List;
 @Getter
 @Setter
 public class OrdersCreatePayload {
-    //이건 아직 있지도 않은 값
-    private Long orderId;
-
     private Long userId;
 
     // 아이템에 대한 무언가 ?? 거의 대부분 식별자가 된다
@@ -22,4 +19,5 @@ public class OrdersCreatePayload {
     private String address;
 
     //지불 방법
+    private String payment;
 }
