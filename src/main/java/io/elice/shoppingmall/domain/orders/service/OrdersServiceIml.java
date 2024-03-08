@@ -1,4 +1,5 @@
 package io.elice.shoppingmall.domain.orders.service;
+
 import io.elice.shoppingmall.domain.bill.entity.Bill;
 import io.elice.shoppingmall.domain.bill.repository.BillRepository;
 import io.elice.shoppingmall.domain.cart.repository.CartRepository;
@@ -17,13 +18,15 @@ import io.elice.shoppingmall.domain.user.repository.UserRepository;
 import io.elice.shoppingmall.util.mapsturct.OrdersResultMapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class OrdersServiceIml implements OrdersService{
+public class OrdersServiceIml implements OrdersService {
     private final OrdersRepository ordersRepository;
     private final UserRepository userRepository;
     private final StatusCodeRepository statusCodeRepository;
@@ -35,31 +38,42 @@ public class OrdersServiceIml implements OrdersService{
 
     @Transactional
     @Override
-    public Long saveOrder(OrdersCreatePayload payload){
+    public Long saveOrder(OrdersCreatePayload payload) {
         User user = userRepository.findById(payload.getUserId()).orElseThrow();
-        Orders saved = ordersRepository.save(Orders.builder().user(user).payment(payload.getPayment()).build());
+        Orders saved = ordersRepository.save(Orders.builder()
+                .user(user)
+                .payment(payload.getPayment())
+                .statusCode(statusCodeRepository.findById(payload.getStatusId()).orElseThrow())
+                .build());
         deliveryRepository.save(Delivery.builder().address(payload.getAddress()).orders(saved).build());
-//        Bill.builder(). 어쩌구 저쩌구 Delivery랑 똑같이 저장
-        payload.getCartId().stream().map(c -> cartRepository.findById(c).orElseThrow()).forEach(e -> orderItemRepository.save(
-                OrderItem.builder()
-                        .orders(saved)
-                        .item(e.getItem())
-                        .count(e.getCount())
-                        .itemPrice(e.getItem().getPrice())
-                        .itemName(e.getItem().getName())
-                        .amount(e.getCount() * e.getItem().getPrice())
-                        .build()));
 
-        payload.getCartId().stream().forEach(c -> cartRepository.deleteById(c));
+//        Bill.builder(). 어쩌구 저쩌구 Delivery랑 똑같이 저장
+        payload.getCartId().stream().map(c -> cartRepository.findById(c).orElseThrow()).forEach(e -> {
+            Integer amount = e.getCount() * (e.getItem().getPrice() - (int) Math.ceil(((double) (e.getItem().getPrice() * e.getItem().getDiscountPer()) / 100)));
+            orderItemRepository.save(
+                    OrderItem.builder()
+                            .orders(saved)
+                            .item(e.getItem())
+                            .count(e.getCount())
+                            .itemPrice(e.getItem().getPrice())
+                            .itemName(e.getItem().getName())
+                            .amount(amount)
+                            .build());
+                    saved.increaseAmount(amount);
+                }
+        );
+
+        payload.getCartId().forEach(cartRepository::deleteById);
 
         return saved.getId();
     }
-    @Override
-    public List<OrdersResult> findOrders(){
-        List<Orders> ordersList = ordersRepository.findAll();
-        List<OrdersResult> dtoList = ordersResultMapper.toDtoList(ordersList);
 
-        return dtoList;
+    @Override
+    public Page<OrdersResult> findOrders(Long userId, Pageable pageable) {
+        if (userId != null && userId != 0) {
+            return ordersRepository.findAllByUserId(userId, pageable).map(ordersResultMapper::toDto);
+        }
+        return ordersRepository.findAll(pageable).map(ordersResultMapper::toDto);
     }
 
 //    @Override
@@ -70,7 +84,7 @@ public class OrdersServiceIml implements OrdersService{
 //    }
 
     @Override
-    public OrdersResult findOrder(Long id){
+    public OrdersResult findOrder(Long id) {
         Orders orders = ordersRepository.findById(id).orElseThrow();
         OrdersResult dto = ordersResultMapper.toDto(orders);
         return dto;
@@ -78,7 +92,7 @@ public class OrdersServiceIml implements OrdersService{
 
     @Transactional
     @Override
-    public Long updateOrder(Long id, OrdersUpdatePayload payload){
+    public Long updateOrder(Long id, OrdersUpdatePayload payload) {
         StatusCode statusCode = statusCodeRepository.findById(payload.getOrdersStatus()).orElseThrow();
         Orders orders = ordersRepository.findById(id).orElseThrow();
         orders.updateOrders(statusCode);
@@ -87,7 +101,7 @@ public class OrdersServiceIml implements OrdersService{
 
     @Transactional
     @Override
-    public Long deleteOrder(Long id){
+    public Long deleteOrder(Long id) {
         ordersRepository.deleteById(id);
         return id;
     }

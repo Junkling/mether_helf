@@ -41,6 +41,13 @@ public class DeliveryServiceIml implements DeliveryService{
         return dto;
     }
 
+    @Override
+    public Long updateDelivery(Long id, DeliveryUpdatePayload payload) {
+        Delivery delivery = deliveryRepository.findById(id).orElseThrow();
+        delivery.updateDelivery(payload.getAddress(), statusCodeRepository.findById(payload.getStatusCodeId()).orElseThrow());
+        return delivery.getId();
+    }
+
     @Transactional
     @Override
     public Long deleteDelivery(Long id){

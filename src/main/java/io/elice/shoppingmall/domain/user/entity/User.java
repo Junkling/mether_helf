@@ -2,11 +2,11 @@ package io.elice.shoppingmall.domain.user.entity;
 
 
 import io.elice.shoppingmall.domain.common.BassEntity;
+import io.elice.shoppingmall.domain.common.Role;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -26,11 +26,19 @@ public class User extends BassEntity {
 
     private String email;
 
-    @ElementCollection
-    private List<String> roles = new ArrayList<>();
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    private Set<Role> roles;
+
+    private String role;
 
     private String job;
 
     private String company;
+
+    public void updateRole(Role role) {
+        roles.clear();
+        roles.add(role);
+        this.role = role.getName();
+    }
 
 }
