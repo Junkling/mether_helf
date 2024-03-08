@@ -29,7 +29,8 @@ public class ItemServiceImpl implements ItemService {
     @Transactional
     @Override
     public Long saveItem(ItemCreatePayload payload) {
-        SecondCategory secondCategory = secondCategoryRepository.findById(payload.getMiddleCategoryId()).orElseThrow();
+        SecondCategory secondCategory = secondCategoryRepository.findById(payload.getSecondCategoryId())
+                .orElseThrow(() -> new IllegalArgumentException("해당 중카테고리가 없습니다. secondCategoryId=" + payload.getSecondCategoryId()));
         Item save = itemRepository.save(
                 Item.builder()
                         .name(payload.getName())
@@ -62,7 +63,8 @@ public class ItemServiceImpl implements ItemService {
     // 유저가 아이템을 단건 조회시 사용
     @Override
     public ItemResult findItem(Long id) {
-        Item item = itemRepository.findById(id).orElseThrow();
+        Item item = itemRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 아이템이 없습니다. id" + id));
         ItemResult dto = itemResultMapper.toDto(item);
         return dto;
     }
@@ -76,7 +78,8 @@ public class ItemServiceImpl implements ItemService {
     // 관리자가 아이템을 단건 조회시 사용
     @Override
     public ItemDetailResult findAdminItem(Long id) {
-        Item item = itemRepository.findById(id).orElseThrow();
+        Item item = itemRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 아이템이 없습니다. id" + id));
         ItemDetailResult dto = itemDetailResultMapper.toDto(item);
         return dto;
     }
@@ -85,7 +88,8 @@ public class ItemServiceImpl implements ItemService {
     @Transactional
     @Override
     public Long updateItem(Long id, ItemUpdatePayload payload) {
-        Item item = itemRepository.findById(id).orElseThrow();
+        Item item = itemRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 아이템이 없습니다. id" + id));
         item.updateItem(payload.getName(), payload.getContent() ,payload.getPrice(), payload.getStock(), payload.getSellCount(), payload.getDiscountPer());
         return item.getId();
     }

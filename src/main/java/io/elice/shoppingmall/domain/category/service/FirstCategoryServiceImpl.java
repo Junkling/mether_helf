@@ -49,8 +49,9 @@ public class FirstCategoryServiceImpl implements FirstCategoryService {
     }
 
     @Override
-    public FirstCategoryDetailResult findById(Long firstCategoryId) {
-        FirstCategory firstCategory = firstCategoryRepository.findById(firstCategoryId).orElseThrow();
+    public FirstCategoryDetailResult findById(Long id) {
+        FirstCategory firstCategory = firstCategoryRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 대카테고리가 없습니다. id=" + id));
         FirstCategoryDetailResult dto = firstCategoryDetailResultMapper.toDto(firstCategory);
         return dto;
     }
@@ -58,7 +59,8 @@ public class FirstCategoryServiceImpl implements FirstCategoryService {
     @Transactional
     @Override
     public Long updateFirstCategory(Long id, FirstCategoryUpdatePayload payload) {
-        FirstCategory firstCategory = firstCategoryRepository.findById(id).orElseThrow();
+        FirstCategory firstCategory = firstCategoryRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 대가테고리가 없습니다. id=" + id));
         firstCategory.updateFirstCategory(payload);
         return firstCategory.getId();
     }
