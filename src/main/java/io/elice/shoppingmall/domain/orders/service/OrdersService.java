@@ -7,7 +7,9 @@ public interface OrdersService {
 
     Long saveOrder(OrdersCreatePayload payload);
 
-    List<OrdersResult> findOrders(Long userId);
+    //List<OrdersResult> findOrders(Long userId);
+
+    List<OrdersResult> findOrders();
 
     OrdersResult findOrder(Long id);
 
