@@ -24,6 +24,6 @@ public class SignUpPayload {
     private String company;
 
     @Schema(description = "권한")
-    private String role;
+    private Long roleId;
 
 }
