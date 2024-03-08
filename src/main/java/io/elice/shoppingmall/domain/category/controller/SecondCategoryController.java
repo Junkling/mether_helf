@@ -35,12 +35,12 @@ public class SecondCategoryController {
         return new ResponseEntity<>(saved, HttpStatus.CREATED);
     }
 
-    @GetMapping("/list/{firstCategoryId}")
+    @GetMapping("/list")
     @Operation(summary = "중카테고리 전체 조회", description = "중카테고리 전체 조회")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = List.class))),
             @ApiResponse(responseCode = "500", description = "에러", content = @Content(schema = @Schema(implementation = List.class)))})
-    public ResponseEntity<List<SecondCategoryResult>> findSecondCategories(@PathVariable(name = "firstCategoryId") Long id) {
+    public ResponseEntity<List<SecondCategoryResult>> findSecondCategories(@RequestParam(name = "firstCategoryId") Long id) {
         List<SecondCategoryResult> secondCategories = secondCategoryService.findSecondCategories(id);
         return new ResponseEntity<>(secondCategories, HttpStatus.OK);
     }
