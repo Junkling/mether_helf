@@ -49,7 +49,7 @@ public class SecondCategoryController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = Long.class))),
             @ApiResponse(responseCode = "500", description = "에러", content = @Content(schema = @Schema(implementation = Long.class)))})
-    public ResponseEntity<Long> updateSecondCategory(@PathVariable(name = "secondCategoryId") Long id, SecondCategoryUpdatePayload payload) {
+    public ResponseEntity<Long> updateSecondCategory(@PathVariable(name = "secondCategoryId") Long id, @RequestBody SecondCategoryUpdatePayload payload) {
         Long updated = secondCategoryService.updateSecondCategory(id, payload);
         return new ResponseEntity<>(updated, HttpStatus.OK);
     }
