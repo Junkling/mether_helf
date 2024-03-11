@@ -32,7 +32,7 @@ public class ItemController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "성공", content = @Content(schema = @Schema(implementation = Long.class))),
             @ApiResponse(responseCode = "500", description = "에러", content = @Content(schema = @Schema(implementation = Long.class)))})
-    public ResponseEntity<Long> saveItem(ItemCreatePayload payload) {
+    public ResponseEntity<Long> saveItem(@RequestBody ItemCreatePayload payload) {
         Long saved = itemService.saveItem(payload);
         return new ResponseEntity<>(saved, HttpStatus.CREATED);
     }
