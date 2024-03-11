@@ -20,7 +20,7 @@ public class StatusCodeServiceIml implements StatusCodeService{
     @Transactional
     @Override
     public Long saveStatusCode(StatusCodeCreatePayload payload){
-        StatusCode saved = statusCodeRepository.save(StatusCode.builder().build());
+        StatusCode saved = statusCodeRepository.save(StatusCode.builder().name(payload.getName()).build());
         return saved.getId();
     }
 

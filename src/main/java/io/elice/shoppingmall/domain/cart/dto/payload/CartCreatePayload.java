@@ -8,7 +8,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CartCreatePayload {
-    @NotNull
     private Long userId;
     @NotNull
     private Long itemId;

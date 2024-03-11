@@ -40,7 +40,7 @@ public class DeliveryController {
         return new ResponseEntity<>(delivery,HttpStatus.OK);
     }
     @PutMapping("/{id}")
-    @Operation(summary = "배달 조회", description = "배달 조회")
+    @Operation(summary = "배달 수정", description = "배달 수정")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = DeliveryResult.class))),
             @ApiResponse(responseCode = "500", description = "에러", content = @Content(schema = @Schema(implementation = DeliveryResult.class)))})

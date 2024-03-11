@@ -3,6 +3,7 @@ package io.elice.shoppingmall.domain.user.entity;
 
 import io.elice.shoppingmall.domain.common.BassEntity;
 import io.elice.shoppingmall.domain.common.Role;
+import io.elice.shoppingmall.domain.user.dto.payload.UserUpdatePayload;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -39,6 +40,10 @@ public class User extends BassEntity {
         roles.clear();
         roles.add(role);
         this.role = role.getName();
+    }
+
+    public void editUserInfo(UserUpdatePayload payload) {
+        this.nickname = payload.getNickname();
     }
 
 }

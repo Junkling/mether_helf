@@ -34,7 +34,7 @@ public class StatusCodeController {
         return new ResponseEntity<>(saved, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}")
+    @GetMapping("/{id}")
     @Operation(summary = "특정 코드 조회", description = "특정 코드 조회")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = StatusCodeResult.class))),
