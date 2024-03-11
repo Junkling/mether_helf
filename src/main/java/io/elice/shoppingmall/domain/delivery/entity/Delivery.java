@@ -27,6 +27,10 @@ public class Delivery extends BassEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private StatusCode statusCode;
 
+    public String getStatusName() {
+        return statusCode.getName();
+    }
+
     public void updateDelivery(String address, StatusCode statusCode) {
         this.address = address;
         this.statusCode = statusCode;

@@ -7,7 +7,8 @@ import io.elice.shoppingmall.domain.delivery.entity.Delivery;
 import io.elice.shoppingmall.domain.delivery.repository.DeliveryRepository;
 import io.elice.shoppingmall.domain.orderitem.entity.OrderItem;
 import io.elice.shoppingmall.domain.orderitem.repository.OrderItemRepository;
-import io.elice.shoppingmall.domain.orders.dto.payload.*;
+import io.elice.shoppingmall.domain.orders.dto.payload.OrdersCreatePayload;
+import io.elice.shoppingmall.domain.orders.dto.payload.OrdersUpdatePayload;
 import io.elice.shoppingmall.domain.orders.dto.result.OrdersResult;
 import io.elice.shoppingmall.domain.orders.entity.Orders;
 import io.elice.shoppingmall.domain.orders.repository.OrdersRepository;
@@ -16,16 +17,17 @@ import io.elice.shoppingmall.domain.statuscode.repository.StatusCodeRepository;
 import io.elice.shoppingmall.domain.user.entity.User;
 import io.elice.shoppingmall.domain.user.repository.UserRepository;
 import io.elice.shoppingmall.util.mapsturct.order.OrdersResultMapper;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class OrdersServiceIml implements OrdersService {
     private final OrdersRepository ordersRepository;
     private final UserRepository userRepository;
