@@ -40,10 +40,11 @@ public class JwtUtil {
             "/api/users/**",
             "/api/admin/**",
             "/api/first_categories/**",
-            "/error",
             "/api/second_categories/**",
+            "/api/items/**",
             "/api/carts/**",
-            "/api/items/**"
+            "/api/orders/**",
+            "/error"
     };
 
 

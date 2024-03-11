@@ -16,7 +16,7 @@ public class OrdersCreatePayload {
     private List<Long> cartId = new ArrayList<>();
 
     //어디로 배송할지도 받아와야함
-    private String address;
+        private String address;
 
     //지불 방법
     private String payment;

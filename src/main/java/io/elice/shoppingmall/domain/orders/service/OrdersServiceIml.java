@@ -1,7 +1,7 @@
 package io.elice.shoppingmall.domain.orders.service;
 
-import io.elice.shoppingmall.domain.bill.entity.Bill;
 import io.elice.shoppingmall.domain.bill.repository.BillRepository;
+import io.elice.shoppingmall.domain.cart.entity.Cart;
 import io.elice.shoppingmall.domain.cart.repository.CartRepository;
 import io.elice.shoppingmall.domain.delivery.entity.Delivery;
 import io.elice.shoppingmall.domain.delivery.repository.DeliveryRepository;
@@ -15,7 +15,7 @@ import io.elice.shoppingmall.domain.statuscode.entity.StatusCode;
 import io.elice.shoppingmall.domain.statuscode.repository.StatusCodeRepository;
 import io.elice.shoppingmall.domain.user.entity.User;
 import io.elice.shoppingmall.domain.user.repository.UserRepository;
-import io.elice.shoppingmall.util.mapsturct.OrdersResultMapper;
+import io.elice.shoppingmall.util.mapsturct.order.OrdersResultMapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -43,22 +43,26 @@ public class OrdersServiceIml implements OrdersService {
         Orders saved = ordersRepository.save(Orders.builder()
                 .user(user)
                 .payment(payload.getPayment())
+                .amount(0L)
                 .statusCode(statusCodeRepository.findById(payload.getStatusId()).orElseThrow())
                 .build());
         deliveryRepository.save(Delivery.builder().address(payload.getAddress()).orders(saved).build());
 
+        List<Cart> cartList = payload.getCartId().stream().map(c -> cartRepository.findById(c).orElseThrow()).toList();
+        saved.setTitleName(cartList);
+
 //        Bill.builder(). 어쩌구 저쩌구 Delivery랑 똑같이 저장
-        payload.getCartId().stream().map(c -> cartRepository.findById(c).orElseThrow()).forEach(e -> {
-            Integer amount = e.getCount() * (e.getItem().getPrice() - (int) Math.ceil(((double) (e.getItem().getPrice() * e.getItem().getDiscountPer()) / 100)));
-            orderItemRepository.save(
-                    OrderItem.builder()
-                            .orders(saved)
-                            .item(e.getItem())
-                            .count(e.getCount())
-                            .itemPrice(e.getItem().getPrice())
-                            .itemName(e.getItem().getName())
-                            .amount(amount)
-                            .build());
+        cartList.forEach(e -> {
+                    Integer amount = e.getCount() * (e.getItem().getPrice() - (int) Math.ceil(((double) (e.getItem().getPrice() * e.getItem().getDiscountPer()) / 100)));
+                    orderItemRepository.save(
+                            OrderItem.builder()
+                                    .orders(saved)
+                                    .item(e.getItem())
+                                    .count(e.getCount())
+                                    .itemPrice(e.getItem().getPrice())
+                                    .itemName(e.getItem().getName())
+                                    .amount(amount)
+                                    .build());
                     saved.increaseAmount(amount);
                 }
         );
