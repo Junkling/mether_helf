@@ -36,12 +36,23 @@ public class FirstCategoryController {
         return new ResponseEntity<>(saved, HttpStatus.CREATED);
     }
 
-    @GetMapping("/list/{role}")
+    // 관리자가 카테고리 리스트를 조회시 사용(관리)
+    @GetMapping("/admin/list")
+    @Operation(summary = "관리자가 대카테고리 전체 조회", description = "관리자가 대카테고리 전체 조회")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = List.class))),
+            @ApiResponse(responseCode = "500", description = "에러", content = @Content(schema = @Schema(implementation = List.class)))})
+    public ResponseEntity<List<FirstCategoryResult>> finAdminFirstCategories(@RequestParam(name = "role", required = false) String role) {
+        List<FirstCategoryResult> allByCode = firstCategoryService.findFirstCategories(role);
+        return new ResponseEntity<>(allByCode, HttpStatus.OK);
+    }
+
+    @GetMapping("/list")
     @Operation(summary = "대카테고리 전체 조회", description = "대카테고리 전체 조회")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = List.class))),
             @ApiResponse(responseCode = "500", description = "에러", content = @Content(schema = @Schema(implementation = List.class)))})
-    public ResponseEntity<List<FirstCategoryResult>> findFirstCategories(@PathVariable(name = "role") String role) {
+    public ResponseEntity<List<FirstCategoryResult>> findFirstCategories(@RequestParam(name = "role", required = false) String role) {
         List<FirstCategoryResult> allByCode = firstCategoryService.findFirstCategories(role);
         return new ResponseEntity<>(allByCode, HttpStatus.OK);
 //        ResponseEntity<List<FirstCategoryResult>> response = new ResponseEntity<>(allByCode, HttpStatus.OK);

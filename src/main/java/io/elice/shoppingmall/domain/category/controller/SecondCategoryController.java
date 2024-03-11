@@ -34,13 +34,24 @@ public class SecondCategoryController {
         Long saved = secondCategoryService.saveSecondCategory(payload);
         return new ResponseEntity<>(saved, HttpStatus.CREATED);
     }
+    // 관리자가 카테고리 리스트를 조회시 사용(관리)
+    @GetMapping("/list")
+    @Operation(summary = "중카테고리 전체 조회", description = "중카테고리 전체 조회")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = List.class))),
+            @ApiResponse(responseCode = "500", description = "에러", content = @Content(schema = @Schema(implementation = List.class)))})
+    public ResponseEntity<List<SecondCategoryResult>> findAdminSecondCategories(@RequestParam(name = "firstCategoryId", required = false) Long id) {
+        List<SecondCategoryResult> secondCategories = secondCategoryService.findSecondCategories(id);
+        return new ResponseEntity<>(secondCategories, HttpStatus.OK);
+    }
+
 
     @GetMapping("/list")
     @Operation(summary = "중카테고리 전체 조회", description = "중카테고리 전체 조회")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = List.class))),
             @ApiResponse(responseCode = "500", description = "에러", content = @Content(schema = @Schema(implementation = List.class)))})
-    public ResponseEntity<List<SecondCategoryResult>> findSecondCategories(@RequestParam(name = "firstCategoryId") Long id) {
+    public ResponseEntity<List<SecondCategoryResult>> findSecondCategories(@RequestParam(name = "firstCategoryId", required = false) Long id) {
         List<SecondCategoryResult> secondCategories = secondCategoryService.findSecondCategories(id);
         return new ResponseEntity<>(secondCategories, HttpStatus.OK);
     }

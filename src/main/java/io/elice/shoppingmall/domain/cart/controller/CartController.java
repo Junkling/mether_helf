@@ -39,7 +39,7 @@ public class CartController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = List.class))),
             @ApiResponse(responseCode = "500", description = "에러", content = @Content(schema = @Schema(implementation = List.class)))})
-    public ResponseEntity<List<CartResult>> findCarts(@RequestParam(name = "userId", required = false)  Long userId) {
+    public ResponseEntity<List<CartResult>> findCarts(@RequestParam(name = "userId", required = false) Long userId) {
         List<CartResult> carts = cartService.findCarts(userId);
         return new ResponseEntity<>(carts, HttpStatus.OK);
     }
