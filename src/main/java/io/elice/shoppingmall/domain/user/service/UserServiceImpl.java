@@ -5,6 +5,7 @@ import io.elice.shoppingmall.domain.common.repository.RoleRepository;
 import io.elice.shoppingmall.domain.user.dto.payload.*;
 import io.elice.shoppingmall.domain.user.dto.result.UserResult;
 import io.elice.shoppingmall.domain.user.entity.User;
+import io.elice.shoppingmall.domain.user.entity.UserRole;
 import io.elice.shoppingmall.domain.user.repository.UserRepository;
 import io.elice.shoppingmall.security.JwtUtil;
 import io.elice.shoppingmall.security.MyTokenPayload;
@@ -37,6 +38,7 @@ public class UserServiceImpl implements UserService {
         if (userRepository.existsByEmail(payload.getEmail()))
             throw new EntityExistsException("이메일 중복입니다.");
 
+        payload.setRoleId(1L);
         User save = userRepository.save(
                 User.builder()
                         .username(payload.getUsername())
@@ -47,11 +49,10 @@ public class UserServiceImpl implements UserService {
                         .job(payload.getJob())
                         .build()
         );
-        save.updateRole(roleRepository.findById(payload.getRoleId()).orElseThrow());
+        save.addRole(UserRole.builder().user(save).role(roleRepository.findById(payload.getRoleId()).orElseThrow()).build());
         return save.getId();
     }
 
-    //TODO: 당장 어떤게 수정될지 확실치 않아 만들지 않았음 의사 결정 후 수정 예정
     @Transactional
     @Override
     public Long updateUser(Long userId, UserUpdatePayload payload) {
@@ -66,7 +67,7 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("입력된 정보를 확인해 주세요.");
         }
 
-        return jwtUtil.generate(new MyTokenPayload(user.getId(), user.getUsername(), user.getRoles().stream().map(Role::getName).toList()));
+        return jwtUtil.generate(new MyTokenPayload(user.getId(), user.getUsername(), user.getRoles().stream().map(ur -> ur.getRole().getName()).toList()));
     }
 
     @Override
@@ -90,7 +91,8 @@ public class UserServiceImpl implements UserService {
     public Long updateUserRole(Long userId, UserRoleEditPayload payload) {
         Role role = roleRepository.findByName(payload.getRoleName()).orElseThrow();
         User user = userRepository.findById(userId).orElseThrow();
-        user.updateRole(role);
+        user.updateRole(UserRole.builder().user(user).role(role).build());
+
         return user.getId();
     }
 
