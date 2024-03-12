@@ -9,7 +9,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface OrdersRepository extends JpaRepository<Orders, Long>{
+public interface OrdersRepository extends JpaRepository<Orders, Long> {
+
     List<Orders> findByUserId(Long userId);
 
     Page<Orders> findAllByUserId(Long userId, Pageable pageable);
