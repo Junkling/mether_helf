@@ -11,8 +11,8 @@ import java.util.List;
 @Repository
 public interface SecondCategoryRepository extends JpaRepository<SecondCategory, Long> {
     List<SecondCategory> findByFirstCategoryId(Long id);
-    Page<SecondCategory> findByFirstCategoryId(Long id, Pageable pageable);
 
     Page<SecondCategory> findByNameContaining(String name, Pageable pageable);
 
+    Page<SecondCategory> findByFirstCategoryId(Long id, Pageable pageable);
 }

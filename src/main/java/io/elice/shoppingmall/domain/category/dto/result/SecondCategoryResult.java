@@ -11,5 +11,5 @@ public class SecondCategoryResult {
 
     private String name;
 
-
+    private FirstCategoryResult firstCategory;
 }

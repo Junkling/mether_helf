@@ -4,7 +4,6 @@ import io.elice.shoppingmall.domain.category.dto.payload.SecondCategoryCreatePay
 import io.elice.shoppingmall.domain.category.dto.payload.SecondCategoryUpdatePayload;
 import io.elice.shoppingmall.domain.category.dto.result.SecondCategoryResult;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
@@ -18,5 +17,8 @@ public interface SecondCategoryService {
     Long updateSecondCategory(Long id, SecondCategoryUpdatePayload payload);
     Long deleteSecondCategory(Long id);
 
-    Page<SecondCategoryResult> findAllPage(String firstCategoryName, String name, Pageable pageable);
+//    PageNation
+    Page<SecondCategoryResult> findAllSecondCategoryByPage(Long firstCategoryId, String name, Pageable pageable);
+
+    SecondCategoryResult findSecondCategory(Long id);
 }

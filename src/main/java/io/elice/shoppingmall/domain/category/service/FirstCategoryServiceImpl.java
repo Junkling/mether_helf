@@ -10,7 +10,10 @@ import io.elice.shoppingmall.util.mapsturct.category.FirstCategoryDetailResultMa
 import io.elice.shoppingmall.util.mapsturct.category.FirstCategoryResultMapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -46,6 +49,16 @@ public class FirstCategoryServiceImpl implements FirstCategoryService {
         List<FirstCategory> all = firstCategoryRepository.findAllByRole(role);
         List<FirstCategoryResult> dtoList = firstCategoryResultMapper.toDtoList(all);
         return dtoList;
+    }
+
+    @Override
+    public Page<FirstCategoryResult> findAllFirstCategoryByPage(String role, String name, Pageable pageable) {
+        if (StringUtils.hasText(role)) {
+            return firstCategoryRepository.findAllByRole(role, pageable).map(firstCategoryResultMapper::toDto);
+        } else if (StringUtils.hasText(name)) {
+            return firstCategoryRepository.findAllByNameContaining(name, pageable).map(firstCategoryResultMapper::toDto);
+        }
+        return firstCategoryRepository.findAll(pageable).map(firstCategoryResultMapper::toDto);
     }
 
     @Override
