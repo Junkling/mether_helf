@@ -39,7 +39,6 @@ public class ItemServiceImpl implements ItemService {
                         .content(payload.getContent())
                         .price(payload.getPrice())
                         .stock(payload.getStock())
-                        .sellCount(payload.getSellCount())
                         .discountPer(payload.getDiscountPer())
                         .secondCategory(secondCategory)
                         .build());
