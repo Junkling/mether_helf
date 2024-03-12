@@ -5,6 +5,7 @@ import io.elice.shoppingmall.domain.cart.entity.Cart;
 import io.elice.shoppingmall.domain.cart.repository.CartRepository;
 import io.elice.shoppingmall.domain.delivery.entity.Delivery;
 import io.elice.shoppingmall.domain.delivery.repository.DeliveryRepository;
+import io.elice.shoppingmall.domain.item.entity.Item;
 import io.elice.shoppingmall.domain.orderitem.entity.OrderItem;
 import io.elice.shoppingmall.domain.orderitem.repository.OrderItemRepository;
 import io.elice.shoppingmall.domain.orders.dto.payload.OrdersCreatePayload;
@@ -38,6 +39,8 @@ public class OrdersServiceIml implements OrdersService {
     private final DeliveryRepository deliveryRepository;
     private final OrdersResultMapper ordersResultMapper;
 
+    private final Integer deliveryFee = 2500;
+
     @Transactional
     @Override
     public Long saveOrder(OrdersCreatePayload payload) {
@@ -51,11 +54,17 @@ public class OrdersServiceIml implements OrdersService {
         deliveryRepository.save(Delivery.builder().address(payload.getAddress()).orders(saved).build());
 
         List<Cart> cartList = payload.getCartId().stream().map(c -> cartRepository.findById(c).orElseThrow()).toList();
+
+        //대표상품명 설정 메서드
         saved.setTitleName(cartList);
 
-//        Bill.builder(). 어쩌구 저쩌구 Delivery랑 똑같이 저장
         cartList.forEach(e -> {
-                    Integer amount = e.getCount() * (e.getItem().getPrice() - (int) Math.ceil(((double) (e.getItem().getPrice() * e.getItem().getDiscountPer()) / 100)));
+                    Item item = e.getItem();
+                    Integer amount = e.getCount() * (item.getPrice() - (int) Math.ceil(((double) (item.getPrice() * item.getDiscountPer()) / 100)));
+
+                    //아이템 판매수량 및 재고 수정 메서드
+                    item.sell(e.getCount());
+
                     orderItemRepository.save(
                             OrderItem.builder()
                                     .orders(saved)
@@ -65,9 +74,13 @@ public class OrdersServiceIml implements OrdersService {
                                     .itemName(e.getItem().getName())
                                     .amount(amount)
                                     .build());
+                    //order의 총액을 계산하는 메서드
                     saved.increaseAmount(amount);
                 }
         );
+        if (saved.getAmount() < 50000) {
+            saved.increaseAmount(deliveryFee);
+        }
 
         payload.getCartId().forEach(cartRepository::deleteById);
 
@@ -82,12 +95,6 @@ public class OrdersServiceIml implements OrdersService {
         return ordersRepository.findAll(pageable).map(ordersResultMapper::toDto);
     }
 
-//    @Override
-//    public List<OrdersResult> findOrders(Long userId){
-//        List<Orders> ordersList = ordersRepository.findByUserId(userId);
-//        List<OrdersResult> dtoList = ordersResultMapper.toDtoList(ordersList);
-//        return dtoList;
-//    }
 
     @Override
     public OrdersResult findOrder(Long id) {

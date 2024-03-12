@@ -16,8 +16,6 @@ public class ItemUpdatePayload {
 
     private Integer stock;
 
-    private Integer sellCount;
-
     private Integer discountPer;
 
 }

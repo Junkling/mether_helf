@@ -44,11 +44,11 @@ public class SecondCategoryController {
             @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = Page.class))),
             @ApiResponse(responseCode = "500", description = "에러", content = @Content(schema = @Schema(implementation = Page.class)))})
     public ResponseEntity<Page<SecondCategoryResult>> findPageSecondCategories(
-            @RequestParam(name = "firstCategoryName", required = false) String firstCategoryName
+            @RequestParam(name = "firstCategoryName", required = false) Long firstCategoryId
             , @RequestParam(name = "name", required = false) String name
             , @RequestParam(name = "page", defaultValue = "0") Integer page
             , @RequestParam(name = "size", defaultValue = "10") Integer size) {
-        Page<SecondCategoryResult> secondCategories = secondCategoryService.findAllPage(firstCategoryName, name, PageRequest.of(page,size));
+        Page<SecondCategoryResult> secondCategories = secondCategoryService.findAllSecondCategoryByPage(firstCategoryId, name, PageRequest.of(page,size));
         return new ResponseEntity<>(secondCategories, HttpStatus.OK);
     }
 

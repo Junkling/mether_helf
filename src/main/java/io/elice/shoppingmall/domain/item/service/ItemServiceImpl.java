@@ -94,7 +94,8 @@ public class ItemServiceImpl implements ItemService {
     public Long updateItem(Long id, ItemUpdatePayload payload) {
         Item item = itemRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 아이템이 없습니다. id" + id));
-        item.updateItem(payload.getName(), payload.getContent() ,payload.getPrice(), payload.getStock(), payload.getSellCount(), payload.getDiscountPer());
+        SecondCategory secondCategory = secondCategoryRepository.findById(payload.getSecondCategoryId()).orElseThrow();
+        item.updateItem(payload.getName(), payload.getContent() ,payload.getPrice(), payload.getStock(), payload.getDiscountPer(), secondCategory);
         return item.getId();
     }
 

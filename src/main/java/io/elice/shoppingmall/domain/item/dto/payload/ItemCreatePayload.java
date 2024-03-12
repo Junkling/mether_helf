@@ -18,7 +18,5 @@ public class ItemCreatePayload {
 
     private Integer stock;
 
-    private Integer sellCount;
-
     private Integer discountPer;
 }
