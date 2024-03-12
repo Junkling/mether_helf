@@ -28,7 +28,7 @@ public class SecondCategoryController {
 
     private final SecondCategoryService secondCategoryService;
 
-    @GetMapping
+    @GetMapping("/list")
     @Operation(summary = "중카테고리 전체 조회", description = "중카테고리 전체 조회")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = List.class))),
