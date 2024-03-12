@@ -48,13 +48,13 @@ public class ItemServiceImpl implements ItemService {
 
     // Pagination 조회
     @Override
-    public Page<ItemResult> findPageItems(Long secondCategoryId, String name, Pageable pageable) {
+    public Page<ItemDetailResult> findPageItems(Long secondCategoryId, String name, Pageable pageable) {
         if (secondCategoryId != null && secondCategoryId !=0) {
-            return itemRepository.findAllBySecondCategoryId(secondCategoryId, pageable).map(itemResultMapper::toDto);
+            return itemRepository.findAllBySecondCategoryId(secondCategoryId, pageable).map(itemDetailResultMapper::toDto);
         } else if (StringUtils.hasText(name)) {
-            return itemRepository.findAllByNameContaining(name, pageable).map(itemResultMapper::toDto);
+            return itemRepository.findAllByNameContaining(name, pageable).map(itemDetailResultMapper::toDto);
         }
-        return itemRepository.findAll(pageable).map(itemResultMapper::toDto);
+        return itemRepository.findAll(pageable).map(itemDetailResultMapper::toDto);
     }
 
     // 유저가 세컨드 카테고리를 통해서 아이템리스트을 조회시 사용

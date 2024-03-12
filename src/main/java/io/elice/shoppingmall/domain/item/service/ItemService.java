@@ -15,7 +15,7 @@ public interface ItemService {
     Long saveItem(ItemCreatePayload payload);
 
     // Pagination 조회
-    Page<ItemResult> findPageItems(Long secondCategoryId, String name, Pageable pageable);
+    Page<ItemDetailResult> findPageItems(Long secondCategoryId, String name, Pageable pageable);
 
     // 유저가 세컨드 카테고리 통해서 조회
     List<ItemResult> findItems(Long secondCategoryId);
