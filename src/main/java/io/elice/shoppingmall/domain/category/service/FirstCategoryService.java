@@ -1,9 +1,11 @@
 package io.elice.shoppingmall.domain.category.service;
 
+import io.elice.shoppingmall.domain.category.dto.payload.FirstCategoryCreatePayload;
 import io.elice.shoppingmall.domain.category.dto.payload.FirstCategoryUpdatePayload;
 import io.elice.shoppingmall.domain.category.dto.result.FirstCategoryDetailResult;
 import io.elice.shoppingmall.domain.category.dto.result.FirstCategoryResult;
-import io.elice.shoppingmall.domain.category.dto.payload.FirstCategoryCreatePayload;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -14,6 +16,7 @@ public interface FirstCategoryService {
 
     Long saveFirstCategory(FirstCategoryCreatePayload payload);
     List<FirstCategoryResult> findFirstCategories(String role);
+    Page<FirstCategoryResult> findAllFirstCategoryByPage(String role, String name, Pageable pageable);
     FirstCategoryDetailResult findById(Long firstCategoryId);
     Long updateFirstCategory(Long id, FirstCategoryUpdatePayload payload);
     Long deleteFirstCategory(Long id);
