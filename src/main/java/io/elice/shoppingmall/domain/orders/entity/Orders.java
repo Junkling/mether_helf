@@ -46,7 +46,7 @@ public class Orders extends BassEntity {
     private String payment;
 
     @BatchSize(size = 50)
-    @OneToMany(mappedBy = "orders",cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "orders", cascade = CascadeType.REMOVE)
     private List<OrderItem> orderItemList = new ArrayList<>();
 
 

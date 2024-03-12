@@ -3,9 +3,13 @@ package io.elice.shoppingmall.domain.user.entity;
 
 import io.elice.shoppingmall.domain.common.BassEntity;
 import io.elice.shoppingmall.domain.common.Role;
+import io.elice.shoppingmall.domain.user.dto.payload.UserUpdatePayload;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -26,8 +30,8 @@ public class User extends BassEntity {
 
     private String email;
 
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    private Set<Role> roles;
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    private List<UserRole> roles = new ArrayList<>();
 
     private String role;
 
@@ -35,10 +39,21 @@ public class User extends BassEntity {
 
     private String company;
 
-    public void updateRole(Role role) {
+    public void updateRole(UserRole role) {
         roles.clear();
         roles.add(role);
-        this.role = role.getName();
+        this.role = role.getRole().getName();
+    }
+
+    public void addRole(UserRole role) {
+        List<UserRole> list = new ArrayList<>();
+        list.add(role);
+        this.roles = list;
+        this.role = role.getRole().getName();
+    }
+
+    public void editUserInfo(UserUpdatePayload payload) {
+        this.nickname = payload.getNickname();
     }
 
 }

@@ -15,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -25,14 +26,14 @@ public class OrdersController {
 
     private final OrdersService ordersService;
 
-    @GetMapping("/list")
+    @GetMapping()
     @Operation(summary = "주문내역 전체조회", description = "주문내역 전체조회")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = Page.class))),
             @ApiResponse(responseCode = "500", description = "에러", content = @Content(schema = @Schema(implementation = Page.class)))})
-    public ResponseEntity<Page<OrdersResult>> findAllOrders(@RequestParam(name = "userId", required = false) Long userId,
-            @RequestParam(name = "size", required = false) Integer size,
-            @RequestParam(name = "page", required = false) Integer page) {
+    public ResponseEntity<Page<OrdersResult>> findAllOrders(@AuthenticationPrincipal Long userId,
+            @RequestParam(name = "size", defaultValue = "5") Integer size,
+            @RequestParam(name = "page", defaultValue = "0") Integer page) {
         Page<OrdersResult> orders = ordersService.findOrders(userId, PageRequest.of(page, size));
         return new ResponseEntity<>(orders, HttpStatus.OK);
     }
@@ -52,7 +53,8 @@ public class OrdersController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = Long.class))),
             @ApiResponse(responseCode = "500", description = "에러", content = @Content(schema = @Schema(implementation = Long.class)))})
-    public ResponseEntity<Long> saveOrder(@RequestBody OrdersCreatePayload ordersCreatePayload) {
+    public ResponseEntity<Long> saveOrder(@RequestBody OrdersCreatePayload ordersCreatePayload,@AuthenticationPrincipal Long userId) {
+        ordersCreatePayload.setUserId(userId);
         Long saved = ordersService.saveOrder(ordersCreatePayload);
         return new ResponseEntity<>(saved, HttpStatus.CREATED);
     }

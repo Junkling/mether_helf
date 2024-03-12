@@ -1,5 +1,7 @@
 package io.elice.shoppingmall.util.mapsturct.order;
 
+import io.elice.shoppingmall.domain.delivery.dto.result.DeliveryResult;
+import io.elice.shoppingmall.domain.delivery.entity.Delivery;
 import io.elice.shoppingmall.domain.orderitem.entity.OrderItem;
 import io.elice.shoppingmall.domain.orders.dto.result.OrderItemResult;
 import io.elice.shoppingmall.domain.orders.dto.result.OrdersResult;
@@ -11,7 +13,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-03-10T15:28:11+0900",
+    date = "2024-03-12T15:02:47+0900",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 21.0.1 (Oracle Corporation)"
 )
 @Component
@@ -28,6 +30,7 @@ public class OrdersResultMapperImpl implements OrdersResultMapper {
         ordersResult.setId( entity.getId() );
         ordersResult.setTitle( entity.getTitle() );
         ordersResult.setPayment( entity.getPayment() );
+        ordersResult.setDelivery( deliveryToDeliveryResult( entity.getDelivery() ) );
         ordersResult.setAmount( entity.getAmount() );
         ordersResult.setOrderItemList( orderItemListToOrderItemResultList( entity.getOrderItemList() ) );
 
@@ -46,6 +49,20 @@ public class OrdersResultMapperImpl implements OrdersResultMapper {
         }
 
         return list;
+    }
+
+    protected DeliveryResult deliveryToDeliveryResult(Delivery delivery) {
+        if ( delivery == null ) {
+            return null;
+        }
+
+        DeliveryResult deliveryResult = new DeliveryResult();
+
+        deliveryResult.setId( delivery.getId() );
+        deliveryResult.setAddress( delivery.getAddress() );
+        deliveryResult.setStatusName( delivery.getStatusName() );
+
+        return deliveryResult;
     }
 
     protected OrderItemResult orderItemToOrderItemResult(OrderItem orderItem) {

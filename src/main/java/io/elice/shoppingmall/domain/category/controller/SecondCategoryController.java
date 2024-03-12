@@ -9,6 +9,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,4 +37,19 @@ public class SecondCategoryController {
         List<SecondCategoryResult> secondCategories = secondCategoryService.findSecondCategories(id);
         return new ResponseEntity<>(secondCategories, HttpStatus.OK);
     }
+
+    @GetMapping("")
+    @Operation(summary = "중카테고리 페이지", description = "중카테고리 페이지")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = Page.class))),
+            @ApiResponse(responseCode = "500", description = "에러", content = @Content(schema = @Schema(implementation = Page.class)))})
+    public ResponseEntity<Page<SecondCategoryResult>> findPageSecondCategories(
+            @RequestParam(name = "firstCategoryName", required = false) String firstCategoryName
+            , @RequestParam(name = "name", required = false) String name
+            , @RequestParam(name = "page", defaultValue = "0") Integer page
+            , @RequestParam(name = "size", defaultValue = "10") Integer size) {
+        Page<SecondCategoryResult> secondCategories = secondCategoryService.findAllPage(firstCategoryName, name, PageRequest.of(page,size));
+        return new ResponseEntity<>(secondCategories, HttpStatus.OK);
+    }
+
 }

@@ -41,8 +41,8 @@ public class SecondCategoryServiceImpl implements SecondCategoryService {
     }
 
     @Override
-    public List<SecondCategoryResult> findSecondCategories(Long id) {
-        List<SecondCategory> all = secondCategoryRepository.findByFirstCategoryId(id);
+    public List<SecondCategoryResult> findSecondCategories(Long firstCategoryId) {
+        List<SecondCategory> all = secondCategoryRepository.findByFirstCategoryId(firstCategoryId);
         List<SecondCategoryResult> dtoList = secondCategoryResultMapper.toDtoList(all);
         return dtoList;
     }

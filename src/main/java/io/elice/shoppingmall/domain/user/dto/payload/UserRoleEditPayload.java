@@ -3,5 +3,6 @@ package io.elice.shoppingmall.domain.user.dto.payload;
 import lombok.Data;
 
 @Data
-public class UserEditPayload {
+public class UserRoleEditPayload {
+    private String RoleName;
 }

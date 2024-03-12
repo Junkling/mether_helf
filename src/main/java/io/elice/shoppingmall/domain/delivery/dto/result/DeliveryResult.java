@@ -6,6 +6,8 @@ import lombok.Setter;
 @Setter
 public class DeliveryResult {
     private Long id;
-    private Long orderId;
+
     private String address;
+
+    private String statusName;
 }
