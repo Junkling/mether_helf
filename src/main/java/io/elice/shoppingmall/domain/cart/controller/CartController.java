@@ -34,12 +34,12 @@ public class CartController {
         return new ResponseEntity<>(saved, HttpStatus.CREATED);
     }
 
-    @GetMapping("/list/{userId}")
+    @GetMapping("/list")
     @Operation(summary = "장바구니 전체조회", description = "장바구니 전체조회")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = List.class))),
             @ApiResponse(responseCode = "500", description = "에러", content = @Content(schema = @Schema(implementation = List.class)))})
-    public ResponseEntity<List<CartResult>> findCarts(@PathVariable(name = "userId") Long userId) {
+    public ResponseEntity<List<CartResult>> findCarts(@RequestParam(name = "userId", required = false) Long userId) {
         List<CartResult> carts = cartService.findCarts(userId);
         return new ResponseEntity<>(carts, HttpStatus.OK);
     }
@@ -74,12 +74,12 @@ public class CartController {
         return new ResponseEntity<>(deleted, HttpStatus.OK);
     }
 
-    @DeleteMapping("/list/{userId}")
+    @DeleteMapping("/list")
     @Operation(summary = "장바구니 전체삭제", description = "장바구니 전체삭제")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = Long.class))),
             @ApiResponse(responseCode = "500", description = "에러", content = @Content(schema = @Schema(implementation = Long.class)))})
-    public ResponseEntity<Long> deleteAllCart(@PathVariable(name = "userId") Long userId) {
+    public ResponseEntity<Long> deleteAllCart(@RequestParam(name = "userId", required = false) Long userId) {
         cartService.deleteAllCart(userId);
         return new ResponseEntity<>(HttpStatus.OK);
     }

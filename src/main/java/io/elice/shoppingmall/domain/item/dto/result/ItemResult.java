@@ -14,6 +14,8 @@ public class ItemResult {
 
     private Integer price;
 
+    private Integer stock;
+
     private Integer discountPer;
 
 }

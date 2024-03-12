@@ -13,4 +13,6 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     List<Item> findAllBySecondCategoryId(Long secondCategoryId);
 
     Page<Item> findAllBySecondCategoryId(Long secondCategoryId, Pageable pageable);
+
+    Page<Item> findAllByNameContaining(String name, Pageable pageable);
 }
