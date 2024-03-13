@@ -13,10 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,12 +25,12 @@ public class SecondCategoryController {
 
     private final SecondCategoryService secondCategoryService;
 
-    @GetMapping("/list")
+    @GetMapping("/list/{firstCategoryId}")
     @Operation(summary = "중카테고리 전체 조회", description = "중카테고리 전체 조회")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = List.class))),
             @ApiResponse(responseCode = "500", description = "에러", content = @Content(schema = @Schema(implementation = List.class)))})
-    public ResponseEntity<List<SecondCategoryResult>> findSecondCategories(@RequestParam(name = "firstCategoryId", required = false) Long id) {
+    public ResponseEntity<List<SecondCategoryResult>> findSecondCategories(@PathVariable(name = "firstCategoryId", required = false) Long id) {
         List<SecondCategoryResult> secondCategories = secondCategoryService.findSecondCategories(id);
         return new ResponseEntity<>(secondCategories, HttpStatus.OK);
     }
