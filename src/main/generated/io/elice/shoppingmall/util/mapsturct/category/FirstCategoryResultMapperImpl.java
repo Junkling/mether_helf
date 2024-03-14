@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-03-12T15:02:45+0900",
+    date = "2024-03-15T00:26:24+0900",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 21.0.1 (Oracle Corporation)"
 )
 @Component
@@ -25,6 +25,7 @@ public class FirstCategoryResultMapperImpl implements FirstCategoryResultMapper 
 
         firstCategoryResult.setId( entity.getId() );
         firstCategoryResult.setName( entity.getName() );
+        firstCategoryResult.setRole( entity.getRole() );
 
         return firstCategoryResult;
     }

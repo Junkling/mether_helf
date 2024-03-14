@@ -26,7 +26,7 @@ public class FirstCategoryController {
     private final FirstCategoryService firstCategoryService;
 
     @GetMapping("")
-    @PreAuthorize("hasAuthority(#role) or hasAnyAuthority('GREEN')")
+    @PreAuthorize("hasAnyAuthority('GREEN') or hasAuthority(#role)")
     @Operation(summary = "대카테고리 전체 조회", description = "대카테고리 전체 조회")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = List.class))),

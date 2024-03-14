@@ -46,6 +46,9 @@ public class FirstCategoryServiceImpl implements FirstCategoryService {
 
     @Override
     public List<FirstCategoryResult> findFirstCategories(String role) {
+        if (!StringUtils.hasText(role)) {
+            return firstCategoryResultMapper.toDtoList(firstCategoryRepository.findAll());
+        }
         List<FirstCategory> all = firstCategoryRepository.findAllByRole(role);
         List<FirstCategoryResult> dtoList = firstCategoryResultMapper.toDtoList(all);
         return dtoList;

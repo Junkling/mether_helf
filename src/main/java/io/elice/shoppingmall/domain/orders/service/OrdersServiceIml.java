@@ -35,7 +35,6 @@ public class OrdersServiceIml implements OrdersService {
     private final StatusCodeRepository statusCodeRepository;
     private final OrderItemRepository orderItemRepository;
     private final CartRepository cartRepository;
-    private final BillRepository billRepository;
     private final DeliveryRepository deliveryRepository;
     private final OrdersResultMapper ordersResultMapper;
 

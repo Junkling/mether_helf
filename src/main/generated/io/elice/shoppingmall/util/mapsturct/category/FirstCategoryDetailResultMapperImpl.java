@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-03-12T15:02:48+0900",
+    date = "2024-03-15T00:26:24+0900",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 21.0.1 (Oracle Corporation)"
 )
 @Component
@@ -27,6 +27,7 @@ public class FirstCategoryDetailResultMapperImpl implements FirstCategoryDetailR
 
         firstCategoryDetailResult.setId( entity.getId() );
         firstCategoryDetailResult.setName( entity.getName() );
+        firstCategoryDetailResult.setRole( entity.getRole() );
         firstCategoryDetailResult.setSecondCategoryList( secondCategoryListToSecondCategoryResultList( entity.getSecondCategoryList() ) );
 
         return firstCategoryDetailResult;
@@ -55,6 +56,7 @@ public class FirstCategoryDetailResultMapperImpl implements FirstCategoryDetailR
 
         secondCategoryResult.setId( secondCategory.getId() );
         secondCategoryResult.setName( secondCategory.getName() );
+        secondCategoryResult.setFirstCategory( toDto( secondCategory.getFirstCategory() ) );
 
         return secondCategoryResult;
     }

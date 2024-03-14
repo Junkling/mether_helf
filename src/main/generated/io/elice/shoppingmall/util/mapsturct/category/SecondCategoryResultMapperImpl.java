@@ -1,6 +1,8 @@
 package io.elice.shoppingmall.util.mapsturct.category;
 
+import io.elice.shoppingmall.domain.category.dto.result.FirstCategoryResult;
 import io.elice.shoppingmall.domain.category.dto.result.SecondCategoryResult;
+import io.elice.shoppingmall.domain.category.entity.FirstCategory;
 import io.elice.shoppingmall.domain.category.entity.SecondCategory;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-03-12T15:02:48+0900",
+    date = "2024-03-15T00:26:24+0900",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 21.0.1 (Oracle Corporation)"
 )
 @Component
@@ -25,6 +27,7 @@ public class SecondCategoryResultMapperImpl implements SecondCategoryResultMappe
 
         secondCategoryResult.setId( entity.getId() );
         secondCategoryResult.setName( entity.getName() );
+        secondCategoryResult.setFirstCategory( firstCategoryToFirstCategoryResult( entity.getFirstCategory() ) );
 
         return secondCategoryResult;
     }
@@ -41,5 +44,19 @@ public class SecondCategoryResultMapperImpl implements SecondCategoryResultMappe
         }
 
         return list;
+    }
+
+    protected FirstCategoryResult firstCategoryToFirstCategoryResult(FirstCategory firstCategory) {
+        if ( firstCategory == null ) {
+            return null;
+        }
+
+        FirstCategoryResult firstCategoryResult = new FirstCategoryResult();
+
+        firstCategoryResult.setId( firstCategory.getId() );
+        firstCategoryResult.setName( firstCategory.getName() );
+        firstCategoryResult.setRole( firstCategory.getRole() );
+
+        return firstCategoryResult;
     }
 }
