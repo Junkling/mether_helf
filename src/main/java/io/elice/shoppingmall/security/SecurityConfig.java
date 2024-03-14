@@ -24,6 +24,7 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtFilter jwtFilter) throws Exception {
         return http
@@ -31,6 +32,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(request ->
                         request
                                 .requestMatchers(jwtUtil.allowedUrls).permitAll()
+                                .requestMatchers("/api/admin/**").hasRole("ROLE_GREEN")
+                                .requestMatchers("/api/first-categories?role=RED").hasRole("ROLE_RED")
+                                .requestMatchers("/api/first-categories?role=YELLOW").hasRole("ROLE_YELLOW")
+                                .requestMatchers("/api/first-categories?role=PURPLE").hasRole("ROLE_PURPLE")
                                 .anyRequest().authenticated())
                 .sessionManagement(sessionManagement ->
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS) // session을 사용하지 않음
@@ -38,4 +43,5 @@ public class SecurityConfig {
                 .addFilterBefore(jwtFilter, RequestCacheAwareFilter.class)
                 .build();
     }
+
 }
