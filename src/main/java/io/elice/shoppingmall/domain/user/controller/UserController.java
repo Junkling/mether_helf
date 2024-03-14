@@ -2,11 +2,13 @@ package io.elice.shoppingmall.domain.user.controller;
 
 import io.elice.shoppingmall.domain.user.dto.payload.DuplicateCheckDto;
 import io.elice.shoppingmall.domain.user.dto.payload.UserUpdatePayload;
+import io.elice.shoppingmall.domain.user.dto.result.UserCheckResult;
 import io.elice.shoppingmall.domain.user.dto.result.UserResult;
 import io.elice.shoppingmall.domain.user.service.UserService;
 import io.elice.shoppingmall.domain.user.dto.payload.SignInPayload;
 import io.elice.shoppingmall.domain.user.dto.payload.SignUpPayload;
 import io.elice.shoppingmall.security.JwtUtil;
+import io.elice.shoppingmall.security.MyTokenPayload;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -74,7 +76,7 @@ public class UserController {
         return new ResponseEntity<>(userService.findOneById(userId), HttpStatus.OK);
     }
 
-    @GetMapping("/check")
+    @GetMapping("/duplicateCheck")
     @Operation(summary = "로그인 상태 확인", description = "로그인 상태 확인")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = Boolean.class))),
@@ -91,6 +93,22 @@ public class UserController {
             @ApiResponse(responseCode = "500", description = "에러", content = @Content(schema = @Schema(implementation = Long.class)))})
     public ResponseEntity<Long> changeUserInfo(@RequestBody UserUpdatePayload payload, @AuthenticationPrincipal Long userId) {
         Long result = userService.updateUser(userId, payload);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @GetMapping("/check")
+    @Operation(summary = "유저 체크", description = "유저 체크")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = Long.class))),
+            @ApiResponse(responseCode = "500", description = "에러", content = @Content(schema = @Schema(implementation = Long.class)))})
+    public ResponseEntity<UserCheckResult> userCheck(HttpServletRequest request) {
+        String token = jwtUtil.extractJwtFromRequest(request);
+        UserCheckResult result = new UserCheckResult("",false,false);
+        if (token != null) {
+            result.setIsAdmin(jwtUtil.verify(token).getRoles().contains("GREEN"));
+            result.setToken(token);
+            result.setIsSigned(jwtUtil.validateToken(token));
+        }
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }
