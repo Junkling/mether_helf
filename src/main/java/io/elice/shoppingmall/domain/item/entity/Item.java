@@ -32,8 +32,7 @@ public class Item extends BassEntity {
 
     private Integer discountPer;
 
-    public void updateItem(String name, String content, Integer price, Integer stock, Integer discountPer, SecondCategory secondCategory) {
-        this.secondCategory = secondCategory;
+    public void updateItem(String name, String content, Integer price, Integer stock, Integer discountPer) {
         this.name = name;
         this.content = content;
         this.price = price;

@@ -18,12 +18,14 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.BadRequestException;
+import org.mapstruct.ap.shaded.freemarker.template.utility.StringUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -96,6 +98,21 @@ public class UserController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    //    @GetMapping("/check")
+//    @Operation(summary = "유저 체크", description = "유저 체크")
+//    @ApiResponses(value = {
+//            @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = Long.class))),
+//            @ApiResponse(responseCode = "500", description = "에러", content = @Content(schema = @Schema(implementation = Long.class)))})
+//    public ResponseEntity<UserCheckResult> userCheck(HttpServletRequest request) {
+//        String token = jwtUtil.extractJwtFromRequest(request);
+//        UserCheckResult result = new UserCheckResult("",false,false);
+//        if (token != null &&  !("null").equals(token)) {
+//            result.setIsAdmin(jwtUtil.verify(token).getRoles().contains("GREEN"));
+//            result.setToken(token);
+//            result.setIsSigned(jwtUtil.validateToken(token));
+//        }
+//        return new ResponseEntity<>(result, HttpStatus.OK);
+//    }
     @GetMapping("/check")
     @Operation(summary = "유저 체크", description = "유저 체크")
     @ApiResponses(value = {
@@ -103,7 +120,7 @@ public class UserController {
             @ApiResponse(responseCode = "500", description = "에러", content = @Content(schema = @Schema(implementation = Long.class)))})
     public ResponseEntity<UserCheckResult> userCheck(HttpServletRequest request) {
         String token = jwtUtil.extractJwtFromRequest(request);
-        UserCheckResult result = new UserCheckResult("",false,false);
+        UserCheckResult result = new UserCheckResult("", false, false);
         if (token != null) {
             result.setIsAdmin(jwtUtil.verify(token).getRoles().contains("GREEN"));
             result.setToken(token);

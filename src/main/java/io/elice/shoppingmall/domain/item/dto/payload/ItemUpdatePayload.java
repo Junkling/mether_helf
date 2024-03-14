@@ -6,7 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ItemUpdatePayload {
-    private Long secondCategoryId;
 
     private String name;
 
