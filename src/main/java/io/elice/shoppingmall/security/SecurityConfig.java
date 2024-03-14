@@ -32,10 +32,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(request ->
                         request
                                 .requestMatchers(jwtUtil.allowedUrls).permitAll()
-                                .requestMatchers("/api/admin/**").hasRole("ROLE_GREEN")
-                                .requestMatchers("/api/first-categories?role=RED").hasRole("ROLE_RED")
-                                .requestMatchers("/api/first-categories?role=YELLOW").hasRole("ROLE_YELLOW")
-                                .requestMatchers("/api/first-categories?role=PURPLE").hasRole("ROLE_PURPLE")
+                                .requestMatchers("/api/admin/**").hasRole("GREEN")
+                                .requestMatchers("/api/first-categories?role=RED").hasRole("RED")
+                                .requestMatchers("/api/first-categories?role=YELLOW").hasRole("YELLOW")
+                                .requestMatchers("/api/first-categories?role=PURPLE").hasRole("PURPLE")
                                 .anyRequest().authenticated())
                 .sessionManagement(sessionManagement ->
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS) // session을 사용하지 않음
