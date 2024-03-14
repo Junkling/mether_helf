@@ -7,6 +7,7 @@ import io.elice.shoppingmall.domain.user.dto.result.UserResult;
 import io.elice.shoppingmall.domain.user.entity.User;
 import io.elice.shoppingmall.domain.user.entity.UserRole;
 import io.elice.shoppingmall.domain.user.repository.UserRepository;
+import io.elice.shoppingmall.domain.user.repository.UserRoleRepository;
 import io.elice.shoppingmall.security.JwtUtil;
 import io.elice.shoppingmall.security.MyTokenPayload;
 import io.elice.shoppingmall.util.mapsturct.UserResultMapper;
@@ -28,6 +29,7 @@ public class UserServiceImpl implements UserService {
     private final JwtUtil jwtUtil;
     private final UserResultMapper userResultMapper;
     private final RoleRepository roleRepository;
+    private final UserRoleRepository userRoleRepository;
 
     @Transactional
     @Override
@@ -91,6 +93,7 @@ public class UserServiceImpl implements UserService {
     public Long updateUserRole(Long userId, UserRoleEditPayload payload) {
         Role role = roleRepository.findByName(payload.getRoleName()).orElseThrow();
         User user = userRepository.findById(userId).orElseThrow();
+        userRoleRepository.findAllByUserId(userId).forEach(userRoleRepository::delete);
         user.updateRole(UserRole.builder().user(user).role(role).build());
 
         return user.getId();

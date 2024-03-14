@@ -42,7 +42,7 @@ public class UserAdminController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = Long.class))),
             @ApiResponse(responseCode = "500", description = "에러", content = @Content(schema = @Schema(implementation = Long.class)))})
-    public ResponseEntity<Long> changeUserRole(@RequestBody UserRoleEditPayload payload, @AuthenticationPrincipal Long userId) {
+    public ResponseEntity<Long> changeUserRole(@RequestBody UserRoleEditPayload payload, @PathVariable(name = "userId") Long userId) {
         Long result = userService.updateUserRole(userId, payload);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }

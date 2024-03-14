@@ -68,7 +68,7 @@ public class SecondCategoryAdminController {
     }
 
     //    단건 조회
-    @GetMapping("/secondCategoryId")
+    @GetMapping("/{secondCategoryId}")
     @Operation(summary = "중카테고리 단건 조회", description = "중카테고리 단건 조회")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = SecondCategoryResult.class))),

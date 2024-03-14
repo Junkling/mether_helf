@@ -17,7 +17,7 @@ public interface FirstCategoryService {
     Long saveFirstCategory(FirstCategoryCreatePayload payload);
     List<FirstCategoryResult> findFirstCategories(String role);
     Page<FirstCategoryResult> findAllFirstCategoryByPage(String role, String name, Pageable pageable);
-    FirstCategoryDetailResult findById(Long firstCategoryId);
+    FirstCategoryResult findById(Long firstCategoryId);
     Long updateFirstCategory(Long id, FirstCategoryUpdatePayload payload);
     Long deleteFirstCategory(Long id);
 }

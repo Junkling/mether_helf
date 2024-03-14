@@ -40,7 +40,6 @@ public class User extends BassEntity {
     private String company;
 
     public void updateRole(UserRole role) {
-        roles.clear();
         roles.add(role);
         this.role = role.getRole().getName();
     }

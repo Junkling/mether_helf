@@ -51,7 +51,7 @@ public class OrdersServiceIml implements OrdersService {
                 .amount(0L)
                 .statusCode(statusCodeRepository.findById(payload.getStatusId()).orElseThrow())
                 .build());
-        deliveryRepository.save(Delivery.builder().address(payload.getAddress()).orders(saved).build());
+        deliveryRepository.save(Delivery.builder().address(payload.getAddress()).orders(saved).statusCode(statusCodeRepository.findById(payload.getStatusId()).orElseThrow()).build());
 
         List<Cart> cartList = payload.getCartId().stream().map(c -> cartRepository.findById(c).orElseThrow()).toList();
 

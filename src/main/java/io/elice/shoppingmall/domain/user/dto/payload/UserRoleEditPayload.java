@@ -4,5 +4,5 @@ import lombok.Data;
 
 @Data
 public class UserRoleEditPayload {
-    private String RoleName;
+    private String roleName;
 }
