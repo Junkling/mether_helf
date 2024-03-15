@@ -76,6 +76,7 @@
 # 📑ERD 다이어그램
 
 https://www.notion.so/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F552fe0dc-fdb3-4c62-979e-df2a2e235613%2F5b6e5a35-25c4-468f-a16e-753584d3a395%2FMH_ERD.png?table=block&id=559544b6-b09e-4e38-a53b-7edf14f4e377&spaceId=552fe0dc-fdb3-4c62-979e-df2a2e235613&width=2000&userId=a09a1ca3-4214-4905-a7a2-172e60f8cd39&cache=v2
+
 ---
 
 ---
