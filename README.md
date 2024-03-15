@@ -75,15 +75,14 @@
 
 # 📑ERD 다이어그램
 
-https://www.notion.so/MurtheHelp-679446eedc72497790c0190ab4005e37
-
+https://www.notion.so/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F552fe0dc-fdb3-4c62-979e-df2a2e235613%2F5b6e5a35-25c4-468f-a16e-753584d3a395%2FMH_ERD.png?table=block&id=559544b6-b09e-4e38-a53b-7edf14f4e377&spaceId=552fe0dc-fdb3-4c62-979e-df2a2e235613&width=2000&userId=a09a1ca3-4214-4905-a7a2-172e60f8cd39&cache=v2
 ---
 
 ---
 
 # ♦️Flow
 
-https://www.notion.so/MurtheHelp-679446eedc72497790c0190ab4005e37
+https://file.notion.so/f/f/552fe0dc-fdb3-4c62-979e-df2a2e235613/618b456a-6e62-42cb-8907-047034f91165/%ED%94%8C%EB%A1%9C%EC%9A%B0%EC%B0%A8%ED%8A%B8.png?id=050dc76e-e9f3-4cf3-b172-19fd8a8bc4aa&table=block&spaceId=552fe0dc-fdb3-4c62-979e-df2a2e235613&expirationTimestamp=1710619200000&signature=Lq-Ec31PIRClQ-UDyMZGwDLhIOTl4W7nEIUvWvYWHnM&downloadName=%ED%94%8C%EB%A1%9C%EC%9A%B0%EC%B0%A8%ED%8A%B8.png
 
 ---
 
