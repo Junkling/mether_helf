@@ -16,6 +16,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -53,7 +54,7 @@ public class OrdersController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = Long.class))),
             @ApiResponse(responseCode = "500", description = "에러", content = @Content(schema = @Schema(implementation = Long.class)))})
-    public ResponseEntity<Long> saveOrder(@RequestBody OrdersCreatePayload ordersCreatePayload,@AuthenticationPrincipal Long userId) {
+    public ResponseEntity<Long> saveOrder(@RequestBody @Validated OrdersCreatePayload ordersCreatePayload, @AuthenticationPrincipal Long userId) {
         ordersCreatePayload.setUserId(userId);
         Long saved = ordersService.saveOrder(ordersCreatePayload);
         return new ResponseEntity<>(saved, HttpStatus.CREATED);
