@@ -1,4 +1,7 @@
 package io.elice.shoppingmall.domain.orders.dto.payload;
+
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,9 +15,12 @@ public class OrdersCreatePayload {
 
     private List<Long> cartId = new ArrayList<>();
 
+    @NotEmpty
     private String address;
 
+    @NotEmpty
     private String payment;
 
+    @NotNull
     private Long statusId;
 }
