@@ -75,7 +75,7 @@
 
 # 📑ERD 다이어그램
 
-![MH_ERD.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/552fe0dc-fdb3-4c62-979e-df2a2e235613/5b6e5a35-25c4-468f-a16e-753584d3a395/MH_ERD.png)
+https://www.notion.so/MurtheHelp-679446eedc72497790c0190ab4005e37
 
 ---
 
@@ -83,7 +83,7 @@
 
 # ♦️Flow
 
-![플로우차트.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/552fe0dc-fdb3-4c62-979e-df2a2e235613/618b456a-6e62-42cb-8907-047034f91165/%ED%94%8C%EB%A1%9C%EC%9A%B0%EC%B0%A8%ED%8A%B8.png)
+https://www.notion.so/MurtheHelp-679446eedc72497790c0190ab4005e37
 
 ---
 
