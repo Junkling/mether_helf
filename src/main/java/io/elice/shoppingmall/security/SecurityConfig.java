@@ -34,10 +34,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(request ->
                         request
                                 .requestMatchers(jwtUtil.allowedUrls).permitAll()
-                                .requestMatchers("/api/admin/**").hasAnyAuthority("GREEN")
-//                                .requestMatchers("/api/first-categories/list/RED").hasAnyAuthority("RED")
-//                                .requestMatchers("/api/first-categories/list/YELLOW").hasAnyAuthority("YELLOW")
-//                                .requestMatchers("/api/first-categories/list/PURPLE").hasAnyAuthority("PURPLE")
+                                .requestMatchers("/api/admin/**").hasAuthority("ROLE_GREEN")
+//                                .requestMatchers("/api/admin/**").hasAnyRole("GREEN")
                                 .anyRequest().authenticated())
                 .sessionManagement(sessionManagement ->
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS) // session을 사용하지 않음
