@@ -12,4 +12,5 @@ public class CartResult {
     private Long id;
     private ItemCartResult item;
     private LocalDateTime createdDate;
+    private Integer count;
 }

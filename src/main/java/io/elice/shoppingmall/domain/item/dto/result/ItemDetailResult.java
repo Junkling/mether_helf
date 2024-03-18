@@ -1,5 +1,6 @@
 package io.elice.shoppingmall.domain.item.dto.result;
 
+import io.elice.shoppingmall.domain.category.dto.result.SecondCategoryResult;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,15 +9,15 @@ import lombok.Setter;
 public class ItemDetailResult {
     private Long id;
 
-    private Long secondCategoryId;
+    private SecondCategoryResult secondCategory;
 
     private String name;
+
+    private String content;
 
     private Integer price;
 
     private Integer stock;
-
-    private Integer sellCount;
 
     private Integer discountPer;
 }

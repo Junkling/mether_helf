@@ -10,7 +10,10 @@ import io.elice.shoppingmall.util.mapsturct.category.FirstCategoryDetailResultMa
 import io.elice.shoppingmall.util.mapsturct.category.FirstCategoryResultMapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -43,22 +46,37 @@ public class FirstCategoryServiceImpl implements FirstCategoryService {
 
     @Override
     public List<FirstCategoryResult> findFirstCategories(String role) {
+        if (!StringUtils.hasText(role)) {
+            return firstCategoryResultMapper.toDtoList(firstCategoryRepository.findAll());
+        }
         List<FirstCategory> all = firstCategoryRepository.findAllByRole(role);
         List<FirstCategoryResult> dtoList = firstCategoryResultMapper.toDtoList(all);
         return dtoList;
     }
 
     @Override
-    public FirstCategoryDetailResult findById(Long firstCategoryId) {
-        FirstCategory firstCategory = firstCategoryRepository.findById(firstCategoryId).orElseThrow();
-        FirstCategoryDetailResult dto = firstCategoryDetailResultMapper.toDto(firstCategory);
+    public Page<FirstCategoryResult> findAllFirstCategoryByPage(String role, String name, Pageable pageable) {
+        if (StringUtils.hasText(role)) {
+            return firstCategoryRepository.findAllByRole(role, pageable).map(firstCategoryResultMapper::toDto);
+        } else if (StringUtils.hasText(name)) {
+            return firstCategoryRepository.findAllByNameContaining(name, pageable).map(firstCategoryResultMapper::toDto);
+        }
+        return firstCategoryRepository.findAll(pageable).map(firstCategoryResultMapper::toDto);
+    }
+
+    @Override
+    public FirstCategoryResult findById(Long id) {
+        FirstCategory firstCategory = firstCategoryRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 대카테고리가 없습니다. id=" + id));
+        FirstCategoryResult dto = firstCategoryResultMapper.toDto(firstCategory);
         return dto;
     }
 
     @Transactional
     @Override
     public Long updateFirstCategory(Long id, FirstCategoryUpdatePayload payload) {
-        FirstCategory firstCategory = firstCategoryRepository.findById(id).orElseThrow();
+        FirstCategory firstCategory = firstCategoryRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 대가테고리가 없습니다. id=" + id));
         firstCategory.updateFirstCategory(payload);
         return firstCategory.getId();
     }

@@ -11,4 +11,6 @@ public class FirstCategoryResult {
 
     private String name;
 
+    private String role;
+
 }

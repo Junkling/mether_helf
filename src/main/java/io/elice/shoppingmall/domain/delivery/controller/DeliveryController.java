@@ -33,11 +33,20 @@ public class DeliveryController {
     @GetMapping("/{id}")
     @Operation(summary = "배달 조회", description = "배달 조회")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = Long.class))),
-            @ApiResponse(responseCode = "500", description = "에러", content = @Content(schema = @Schema(implementation = Long.class)))})
+            @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = DeliveryResult.class))),
+            @ApiResponse(responseCode = "500", description = "에러", content = @Content(schema = @Schema(implementation = DeliveryResult.class)))})
     public ResponseEntity<DeliveryResult> findDelivery(@PathVariable(name = "id") Long id){
         DeliveryResult delivery = deliveryService.findDelivery(id);
         return new ResponseEntity<>(delivery,HttpStatus.OK);
+    }
+    @PutMapping("/{id}")
+    @Operation(summary = "배달 수정", description = "배달 수정")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = DeliveryResult.class))),
+            @ApiResponse(responseCode = "500", description = "에러", content = @Content(schema = @Schema(implementation = DeliveryResult.class)))})
+    public ResponseEntity<Long> updateDelivery(@PathVariable(name = "id") Long id, @RequestBody DeliveryUpdatePayload payload){
+        Long updatedId = deliveryService.updateDelivery(id, payload);
+        return new ResponseEntity<>(updatedId,HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,17 +30,18 @@ public class CartController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "성공", content = @Content(schema = @Schema(implementation = Long.class))),
             @ApiResponse(responseCode = "500", description = "에러", content = @Content(schema = @Schema(implementation = Long.class)))})
-    public ResponseEntity<Long> saveCart(@RequestBody CartCreatePayload payload) {
+    public ResponseEntity<Long> saveCart(@RequestBody CartCreatePayload payload, @AuthenticationPrincipal Long userId) {
+        payload.setUserId(userId);
         Long saved = cartService.saveCart(payload);
         return new ResponseEntity<>(saved, HttpStatus.CREATED);
     }
 
-    @GetMapping("/list/{userId}")
+    @GetMapping("")
     @Operation(summary = "장바구니 전체조회", description = "장바구니 전체조회")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = List.class))),
             @ApiResponse(responseCode = "500", description = "에러", content = @Content(schema = @Schema(implementation = List.class)))})
-    public ResponseEntity<List<CartResult>> findCarts(@PathVariable(name = "userId") Long userId) {
+    public ResponseEntity<List<CartResult>> findCarts(@AuthenticationPrincipal Long userId) {
         List<CartResult> carts = cartService.findCarts(userId);
         return new ResponseEntity<>(carts, HttpStatus.OK);
     }
@@ -74,12 +76,12 @@ public class CartController {
         return new ResponseEntity<>(deleted, HttpStatus.OK);
     }
 
-    @DeleteMapping("/list/{userId}")
+    @DeleteMapping("")
     @Operation(summary = "장바구니 전체삭제", description = "장바구니 전체삭제")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = Long.class))),
             @ApiResponse(responseCode = "500", description = "에러", content = @Content(schema = @Schema(implementation = Long.class)))})
-    public ResponseEntity<Long> deleteAllCart(@PathVariable(name = "userId") Long userId) {
+    public ResponseEntity<Long> deleteAllCart(@AuthenticationPrincipal Long userId) {
         cartService.deleteAllCart(userId);
         return new ResponseEntity<>(HttpStatus.OK);
     }

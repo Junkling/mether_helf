@@ -1,6 +1,5 @@
 package io.elice.shoppingmall.domain.category.entity;
 
-import io.elice.shoppingmall.domain.category.dto.payload.SecondCategoryUpdatePayload;
 import io.elice.shoppingmall.domain.common.BassEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -18,7 +17,7 @@ public class SecondCategory extends BassEntity {
 
     private String name;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "first_category_id")
     private FirstCategory firstCategory;
 

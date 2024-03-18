@@ -17,13 +17,14 @@ public class Cart extends BassEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Item item;
 
     private Integer count;
+
     public void updateCart(Integer count) {
         this.count = count;
     }

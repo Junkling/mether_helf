@@ -27,12 +27,15 @@ public class CartServiceIml implements CartService {
     @Transactional
     @Override
     public Long saveCart(CartCreatePayload payload) {
-        User user = userRepository.findById(payload.getUserId()).orElseThrow();
-        Item item = itemRepository.findById(payload.getItemId()).orElseThrow();
+        User user = userRepository.findById(payload.getUserId())
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다. userId=" + payload.getUserId()));
+        Item item = itemRepository.findById(payload.getItemId())
+                .orElseThrow(() -> new IllegalArgumentException("해당 아이템이 없습니다. itemId=" + payload.getItemId()));
         Cart saved = cartRepository.save(
                 Cart.builder()
                         .user(user)
                         .item(item)
+                        .count(payload.getCount())
                         .build());
         return saved.getId();
     }
@@ -46,7 +49,8 @@ public class CartServiceIml implements CartService {
 
     @Override
     public CartResult findCart(Long id) {
-        Cart cart = cartRepository.findById(id).orElseThrow();
+        Cart cart = cartRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 장바구니가 없습니다. id=" + id));
         CartResult dto = cartResultMapper.toDto(cart);
         return dto;
     }
@@ -54,7 +58,8 @@ public class CartServiceIml implements CartService {
     @Transactional
     @Override
     public Long updateCart(Long id, CartUpdatePayload payload) {
-        Cart cart = cartRepository.findById(id).orElseThrow();
+        Cart cart = cartRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 장바구니가 없습니다. id=" + id));
         cart.updateCart(payload.getCount());
         return cart.getId();
     }

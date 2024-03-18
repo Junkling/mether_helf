@@ -1,21 +1,24 @@
 package io.elice.shoppingmall.domain.user.service;
 
-import io.elice.shoppingmall.domain.user.dto.payload.DuplicateCheckDto;
+import io.elice.shoppingmall.domain.common.Role;
+import io.elice.shoppingmall.domain.common.repository.RoleRepository;
+import io.elice.shoppingmall.domain.user.dto.payload.*;
+import io.elice.shoppingmall.domain.user.dto.result.UserResult;
 import io.elice.shoppingmall.domain.user.entity.User;
+import io.elice.shoppingmall.domain.user.entity.UserRole;
 import io.elice.shoppingmall.domain.user.repository.UserRepository;
+import io.elice.shoppingmall.domain.user.repository.UserRoleRepository;
 import io.elice.shoppingmall.security.JwtUtil;
 import io.elice.shoppingmall.security.MyTokenPayload;
-import io.elice.shoppingmall.domain.user.dto.payload.SignInPayload;
-import io.elice.shoppingmall.domain.user.dto.payload.SignUpPayload;
-import io.elice.shoppingmall.domain.user.dto.payload.UserEditPayload;
+import io.elice.shoppingmall.util.mapsturct.UserResultMapper;
 import jakarta.persistence.EntityExistsException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
-
-import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +27,9 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
+    private final UserResultMapper userResultMapper;
+    private final RoleRepository roleRepository;
+    private final UserRoleRepository userRoleRepository;
 
     @Transactional
     @Override
@@ -34,7 +40,8 @@ public class UserServiceImpl implements UserService {
         if (userRepository.existsByEmail(payload.getEmail()))
             throw new EntityExistsException("이메일 중복입니다.");
 
-        return userRepository.save(
+        payload.setRoleId(1L);
+        User save = userRepository.save(
                 User.builder()
                         .username(payload.getUsername())
                         .password(passwordEncoder.encode(payload.getPassword()))
@@ -42,17 +49,19 @@ public class UserServiceImpl implements UserService {
                         .company(payload.getCompany())
                         .email(payload.getEmail())
                         .job(payload.getJob())
-                        .roles(Stream.of(payload.getRole()).toList())
                         .build()
-        ).getId();
+        );
+        save.addRole(UserRole.builder().user(save).role(roleRepository.findById(payload.getRoleId()).orElseThrow()).build());
+        return save.getId();
     }
 
-    //TODO: 당장 어떤게 수정될지 확실치 않아 만들지 않았음 의사 결정 후 수정 예정
+    @Transactional
     @Override
-    public Long updateUser(UserEditPayload payload) {
-        return null;
+    public Long updateUser(Long userId, UserUpdatePayload payload) {
+        User user = userRepository.findById(userId).orElseThrow();
+        user.editUserInfo(payload);
+        return user.getId();
     }
-
     @Override
     public String signIn(SignInPayload payload) {
         User user = userRepository.findByUsername(payload.getUsername());
@@ -60,9 +69,35 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("입력된 정보를 확인해 주세요.");
         }
 
-        return jwtUtil.generate(new MyTokenPayload(user.getId(), user.getUsername(), user.getRoles()));
+        return jwtUtil.generate(new MyTokenPayload(user.getId(), user.getUsername(), user.getRoles().stream().map(ur -> ur.getRole().getName()).toList()));
     }
 
+    @Override
+    public Page<UserResult> findAllUserByPage(String nickname , String role, Pageable pageable) {
+        if (StringUtils.hasText(role)) {
+            return userRepository.findAllByRole(role, pageable).map(userResultMapper::toDto);
+        } else if (StringUtils.hasText(nickname)) {
+            return userRepository.findAllByNicknameContaining(nickname, pageable).map(userResultMapper::toDto);
+        }
+        return userRepository.findAll(pageable).map(userResultMapper::toDto);
+    }
+
+    @Override
+    public UserResult findOneById(Long id) {
+        return userResultMapper.toDto(
+                userRepository.findById(id).orElseThrow());
+    }
+
+    @Transactional
+    @Override
+    public Long updateUserRole(Long userId, UserRoleEditPayload payload) {
+        Role role = roleRepository.findByName(payload.getRoleName()).orElseThrow();
+        User user = userRepository.findById(userId).orElseThrow();
+        userRoleRepository.findAllByUserId(userId).forEach(userRoleRepository::delete);
+        user.updateRole(UserRole.builder().user(user).role(role).build());
+
+        return user.getId();
+    }
 
     @Override
     public Boolean checkDuplicate(DuplicateCheckDto dto) {

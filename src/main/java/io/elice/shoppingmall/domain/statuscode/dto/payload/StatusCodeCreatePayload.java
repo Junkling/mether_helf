@@ -6,6 +6,5 @@ import lombok.Setter;
 @Getter
 @Setter
 public class StatusCodeCreatePayload {
-    private Long id;
     private String name;
 }

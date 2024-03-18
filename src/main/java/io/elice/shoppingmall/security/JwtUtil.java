@@ -37,8 +37,13 @@ public class JwtUtil {
             "/v3/api-docs/**",
             "/swagger-ui/**",
             "/",
-            "/user/**",
-            "/api/first_categories/**",
+            "/api/users/**",
+//            "/api/admin/**",
+//            "/api/first-categories/**",
+//            "/api/second-categories/**",
+//            "/api/items/**",
+//            "/api/carts/**",
+//            "/api/orders/**",
             "/error"
     };
 
@@ -70,11 +75,6 @@ public class JwtUtil {
                     .parseClaimsJws(token)
                     .getBody();
 
-//            Claims payload = Jwts.parser()
-//                    .verifyWith()
-//                    .build()
-//                    .parseSignedClaims(token)
-//                    .getPayload();
 
             Long id = payload.get("id", Long.class);
             String username = payload.get("username", String.class);
