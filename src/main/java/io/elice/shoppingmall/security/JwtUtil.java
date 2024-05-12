@@ -24,6 +24,7 @@ public class JwtUtil {
 
     @Value("${jwt.expiration}")
     private long expiration;
+
     private SecretKey secretKey;
     public final String[] allowedUrls = {
             "/v2/api-docs",
@@ -44,7 +45,7 @@ public class JwtUtil {
 //            "/api/items/**",
 //            "/api/carts/**",
 //            "/api/orders/**",
-            "/error"
+            "/error",
     };
 
 
