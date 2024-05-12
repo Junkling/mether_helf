@@ -11,6 +11,7 @@ public class SignUpPayload {
     @NotEmpty
     @Schema(description = "로그인 id")
     private String username;
+
     @NotEmpty
     @Schema(description = "닉네임")
     private String nickname;

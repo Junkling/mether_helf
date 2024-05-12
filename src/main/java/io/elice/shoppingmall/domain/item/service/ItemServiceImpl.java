@@ -92,7 +92,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public Long updateItem(Long id, ItemUpdatePayload payload) {
         Item item = itemRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 아이템이 없습니다. id" + id));
+                .orElseThrow(() -> new IllegalArgumentException("해당 아이템이 없습니다. itemId = " + id));
         item.updateItem(payload.getName(), payload.getContent() ,payload.getPrice(), payload.getStock(), payload.getDiscountPer());
         return item.getId();
     }

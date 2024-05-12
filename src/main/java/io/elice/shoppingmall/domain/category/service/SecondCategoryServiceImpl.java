@@ -72,7 +72,7 @@ public class SecondCategoryServiceImpl implements SecondCategoryService {
     @Override
     public Page<SecondCategoryResult> findAllSecondCategoryByPage(Long firstCategoryId, String name, Pageable pageable) {
         if (firstCategoryId != null && firstCategoryId != 0) {
-            return secondCategoryRepository.findByFirstCategoryId(firstCategoryId, pageable).map(secondCategory -> secondCategoryResultMapper.toDto(secondCategory));
+            return secondCategoryRepository.findByFirstCategoryId(firstCategoryId, pageable).map(secondCategoryResultMapper::toDto);
         } else if (StringUtils.hasText(name)) {
             Page<SecondCategory> byNameContaining = secondCategoryRepository.findByNameContaining(name, pageable);
             return byNameContaining.map(secondCategory -> secondCategoryResultMapper.toDto(secondCategory));
